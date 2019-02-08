@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import Editor from '../Editor/Editor'
 import Home from '../Home/Home'
 
+import Aux from '../../hoc/Aux'
+
 const Landing = (props) => {
     return(
-        <div>
+        <Aux>
             {props.isLogged ?  <Editor /> : <Home /> } 
-        </div>
+        </Aux>
     )
 }
 
