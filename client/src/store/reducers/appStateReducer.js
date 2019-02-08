@@ -5,12 +5,16 @@ import { SIDE_MENU_SHOW_BLOCKS,
         ADD_ITEM_TO_EDITOR,
         DELETE_ITEM_FROM_EDITOR,
         SELECT_FOR_EDITING,
-        UNSELECT_FROM_EDITING
+        UNSELECT_FROM_EDITING,
+        MOVE_ITEM_INSIDE_EDITOR,
+        SELECT_FOR_MOVING,
+        UNSELECT_FROM_MOVING
     } from '../types/appStateTypes'
 
 const initialState = {
     sideMenu: 'blocks',
     selectedForDragging: '',
+    selectedForMoving: '',
     selectedForEditing: '',
     items: {}
 }
@@ -59,6 +63,25 @@ const reducer = (state = initialState, action) => {
         case UNSELECT_FROM_EDITING: return {
             ...state,
             selectedForEditing: ''
+        }
+        case SELECT_FOR_MOVING: return{
+            ...state,
+            selectedForMoving: action.id
+        }
+        case UNSELECT_FROM_MOVING: return{
+            ...state,
+            selectedForMoving: ''
+        }
+        case MOVE_ITEM_INSIDE_EDITOR: return {
+            ...state,
+            items: {
+                ...state.items,
+                [state.selectedForMoving]: {
+                    ...state.items[state.selectedForMoving],
+                    x: state.items[state.selectedForMoving].x + action.data.x,
+                    y: state.items[state.selectedForMoving].y + action.data.y
+                }
+            }
         }
         default: 
             return state;

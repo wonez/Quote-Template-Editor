@@ -6,11 +6,16 @@ import Home from '../Home/Home'
 
 import Aux from '../../hoc/Aux'
 
+import { DragDropContextProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
 const Landing = (props) => {
     return(
-        <Aux>
-            {props.isLogged ?  <Editor /> : <Home /> } 
-        </Aux>
+        props.isLogged ? (
+            <DragDropContextProvider backend={HTML5Backend}>
+                <Editor /> 
+            </DragDropContextProvider>
+        ): <Home />        
     )
 }
 

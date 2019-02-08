@@ -5,7 +5,10 @@ import { SIDE_MENU_SHOW_FIELDS,
         ADD_ITEM_TO_EDITOR,
         DELETE_ITEM_FROM_EDITOR,
         SELECT_FOR_EDITING,
-        UNSELECT_FROM_EDITING
+        UNSELECT_FROM_EDITING,
+        MOVE_ITEM_INSIDE_EDITOR,
+        SELECT_FOR_MOVING,
+        UNSELECT_FROM_MOVING
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -57,5 +60,25 @@ export const selectForEditing = (id) => {
 export const unselectFromEditing = () => {
     return{
         type: UNSELECT_FROM_EDITING
+    }
+}
+
+export const moveItemInsideEditor = (data) => {
+    return {
+        type: MOVE_ITEM_INSIDE_EDITOR,
+        data
+    }
+}
+
+export const selectForMoving = (id) => {
+    return {
+        type: SELECT_FOR_MOVING,
+        id
+    }
+}
+export const unselectFromMoving = (id) => {
+    return {
+        type: UNSELECT_FROM_MOVING,
+        id
     }
 }

@@ -10,5 +10,8 @@ export {
     addItemToEditor,
     deleteItemFromEditor,
     selectForEditing,
-    unselectFromEditing
+    unselectFromEditing,
+    moveItemInsideEditor,
+    selectForMoving,
+    unselectFromMoving
 } from './creators/appStateCreatros'
