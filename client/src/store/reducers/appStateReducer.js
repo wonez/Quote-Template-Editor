@@ -1,22 +1,26 @@
 import { SIDE_MENU_SHOW_BLOCKS, 
         SIDE_MENU_SHOW_FIELDS, 
         SELECT_FOR_DRAGGING, 
-        UNSELECT_FOR_DRAGGING,
+        UNSELECT_FROM_DRAGGING,
         ADD_ITEM_TO_EDITOR,
         DELETE_ITEM_FROM_EDITOR,
         SELECT_FOR_EDITING,
         UNSELECT_FROM_EDITING,
         MOVE_ITEM_INSIDE_EDITOR,
         SELECT_FOR_MOVING,
-        UNSELECT_FROM_MOVING
+        UNSELECT_FROM_MOVING,
+        SET_COORDINATES_WHEN_DRAGGING
     } from '../types/appStateTypes'
 
 const initialState = {
     sideMenu: 'blocks',
     selectedForDragging: '',
-    selectedForMoving: '',
-    selectedForEditing: '',
-    items: {}
+    selectedForMoving: {},
+    selectedForEditing: {},
+    editors:{
+        Editor1: {},
+        Editor2: {}
+    }
 }
 
 const reducer = (state = initialState, action) => {
@@ -33,56 +37,74 @@ const reducer = (state = initialState, action) => {
             ...state,
             selectedForDragging: action.kind
         }
-        case UNSELECT_FOR_DRAGGING: return {
+        case UNSELECT_FROM_DRAGGING: return {
             ...state,
             selectedForDragging: ''
         }
         case ADD_ITEM_TO_EDITOR: return {
             ...state,
-            items: {
-                ...state.items,
-                [action.data.id]: {
-                    ...action.data,
-                    children: {}
+            editors:{
+                ...state.editors,
+                [action.data.editorId]: {
+                    ...state.editors[action.data.editorId],
+                    [action.data.newItem.id]: {
+                        ...action.data.newItem
+                    }
                 }
             }
         }
         case DELETE_ITEM_FROM_EDITOR: 
             let newState = {
                 ...state,
-                items: {
-                    ...state.items,
+                editors:{
+                    ...state.editors,
+                    [action.data.editorId]: {
+                        ...state.editors[action.data.editorId],
+                    }
                 }
             }
-            delete newState.items[action.id]
+            delete newState.editors[action.data.editorId][action.data.itemId]
             return newState
         case SELECT_FOR_EDITING: return {
             ...state,
-            selectedForEditing: action.id
+            selectedForEditing: action.data
         }
         case UNSELECT_FROM_EDITING: return {
             ...state,
-            selectedForEditing: ''
+            selectedForEditing: {}
         }
         case SELECT_FOR_MOVING: return{
             ...state,
-            selectedForMoving: action.id
+            selectedForMoving: action.data
         }
         case UNSELECT_FROM_MOVING: return{
             ...state,
-            selectedForMoving: ''
+            selectedForMoving: {}
         }
-        case MOVE_ITEM_INSIDE_EDITOR: return {
+        case MOVE_ITEM_INSIDE_EDITOR:
+        let data = {
+            newX: state.editors[state.selectedForMoving.editorId][state.selectedForMoving.itemId].x + action.data.x,
+            newY: state.editors[state.selectedForMoving.editorId][state.selectedForMoving.itemId].y + action.data.y,
+        }
+        return {
             ...state,
-            items: {
-                ...state.items,
-                [state.selectedForMoving]: {
-                    ...state.items[state.selectedForMoving],
-                    x: state.items[state.selectedForMoving].x + action.data.x,
-                    y: state.items[state.selectedForMoving].y + action.data.y
+            editors:{
+                ...state.editors,
+                [state.selectedForMoving.editorId]: {
+                    ...state.editors[state.selectedForMoving.editorId],
+                    [state.selectedForMoving.itemId]: {
+                        ...state.editors[state.selectedForMoving.editorId][state.selectedForMoving.itemId],
+                        x: data.newX,
+                        y: data.newY
+                    }
                 }
             }
         }
+        // case SET_COORDINATES_WHEN_DRAGGING: return{
+        //     ...state,
+        //     draggingX: action.data.x,
+        //     draggingY: action.data.y
+        // }
         default: 
             return state;
     }

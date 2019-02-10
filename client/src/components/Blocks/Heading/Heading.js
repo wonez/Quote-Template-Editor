@@ -11,7 +11,7 @@ import { DragSource } from 'react-dnd';
 
 const headingSource = {
   beginDrag(props, monitor, component) {
-    props.selectForMoving(props.id);
+    props.selectForMoving({itemId: props.id, editorId: props.editorId});
     return {};
   },
   endDrag(props, monitor, component){
@@ -29,7 +29,7 @@ const collect = (connect, monitor) => {
 class Heading extends React.Component {
     render(){
         return this.props.connectDragSource(
-            <div className={classes.Heading} style={{top: this.props.y, cursor: 'move'}}>
+            <div className={classes.Heading} style={{top: this.props.y, left: this.props.x, cursor: 'move', ...this.props.style}}>
                 <div className={classes.Toolbar}>
                     <div className={classes.Select} onClick={this.props.selectForEditing}></div>
                     <p>Heading Block</p>

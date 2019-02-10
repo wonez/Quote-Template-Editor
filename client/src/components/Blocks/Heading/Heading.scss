@@ -1,11 +1,10 @@
 .Heading{
-    height: 30rem;
+    height: 20rem;
+    z-index: 50;
     border: .2rem solid #777;
     position: absolute;
     background: white;
-    left: 0;
-    width: 100%;
-    width: calc(100% - 2rem);
+    width: 95%;
     margin: 1rem;
     .Toolbar{
         display: flex;

@@ -7,6 +7,7 @@ import AllBlocks from '../../components/AllBlocks/AllBlocks'
 import AllFields from '../../components/AllFields/AllFields'
 
 import classes from './EditorSidebar.scss'
+import BlockDragLayer from '../../components/BlockDragLayer/BlockDragLayer';
 
 class EditorSidebar extends React.Component{
     render(){
@@ -16,6 +17,7 @@ class EditorSidebar extends React.Component{
                 <div className={classes.Content}>
                     {this.props.sideMenu == 'blocks' ? <AllBlocks /> : <AllFields /> }
                 </div>
+                <BlockDragLayer />
             </div>
         )
     }

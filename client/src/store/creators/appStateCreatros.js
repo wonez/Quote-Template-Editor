@@ -1,14 +1,15 @@
 import { SIDE_MENU_SHOW_FIELDS, 
         SIDE_MENU_SHOW_BLOCKS,
         SELECT_FOR_DRAGGING, 
-        UNSELECT_FOR_DRAGGING, 
+        UNSELECT_FROM_DRAGGING, 
         ADD_ITEM_TO_EDITOR,
         DELETE_ITEM_FROM_EDITOR,
         SELECT_FOR_EDITING,
         UNSELECT_FROM_EDITING,
         MOVE_ITEM_INSIDE_EDITOR,
         SELECT_FOR_MOVING,
-        UNSELECT_FROM_MOVING
+        UNSELECT_FROM_MOVING,
+        SET_COORDINATES_WHEN_DRAGGING
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -30,9 +31,9 @@ export const selectForDragging = (kind) => {
     }
 }
 
-export const unselectForDragging = () => {
+export const unselectFromDragging = () => {
     return {
-        type: UNSELECT_FOR_DRAGGING
+        type: UNSELECT_FROM_DRAGGING
     }
 }
 
@@ -43,17 +44,17 @@ export const addItemToEditor = (data) => {
     }
 }
 
-export const deleteItemFromEditor = (id) => {
+export const deleteItemFromEditor = (data) => {
     return {
         type: DELETE_ITEM_FROM_EDITOR,
-        id
+        data
     }
 }
 
-export const selectForEditing = (id) => {
+export const selectForEditing = (data) => {
     return{
         type: SELECT_FOR_EDITING,
-        id
+        data
     }
 }
 
@@ -70,15 +71,22 @@ export const moveItemInsideEditor = (data) => {
     }
 }
 
-export const selectForMoving = (id) => {
+export const selectForMoving = (data) => {
     return {
         type: SELECT_FOR_MOVING,
-        id
+        data
     }
 }
-export const unselectFromMoving = (id) => {
+export const unselectFromMoving = (data) => {
     return {
         type: UNSELECT_FROM_MOVING,
-        id
+        data
+    }
+}
+
+export const setCoordinatesWhenDragging = data => {
+    return {
+        type: SET_COORDINATES_WHEN_DRAGGING,
+        data
     }
 }

@@ -1,3 +1,4 @@
 export const ItemTypes = {
+    BLOCK_SELECTOR: 'BLOCK_SELECTOR',
     HEADING_BLOCK: 'HEADING_BLOCK'
 }

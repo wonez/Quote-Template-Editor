@@ -3,4 +3,9 @@
     border: .5rem solid black;
     position: relative;
     overflow: hidden;
+    width: 100%;
+    height: calc(100vh - 4rem);
+    &:not(:first-child){
+        margin-top: 2rem;
+    }
 }

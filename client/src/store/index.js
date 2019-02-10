@@ -6,12 +6,13 @@ export {
     showBLocks,
     showFields,
     selectForDragging,
-    unselectForDragging,
+    unselectFromDragging,
     addItemToEditor,
     deleteItemFromEditor,
     selectForEditing,
     unselectFromEditing,
     moveItemInsideEditor,
     selectForMoving,
-    unselectFromMoving
+    unselectFromMoving,
+    setCoordinatesWhenDragging
 } from './creators/appStateCreatros'
