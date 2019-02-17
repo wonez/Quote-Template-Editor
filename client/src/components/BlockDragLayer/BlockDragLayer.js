@@ -9,7 +9,6 @@ import BlockDragPreview from '../BlockDragPreview/BlockDragPreview'
 import { setCoordinatesWhenDragging } from '../../store'
 
 import { DragLayer } from 'react-dnd';
-import { ItemTypes } from '../../dnd/types'
 
 
 const collect = (monitor, props) => {
@@ -19,12 +18,9 @@ const collect = (monitor, props) => {
             isDragging: monitor.isDragging()
         }
     }
-    //store x, y in redux
-    // if(monitor.getSourceClientOffset()) 
-    //     props.setCoordinatesWhenDragging(monitor.getSourceClientOffset())
     return{
         itemType: monitor.getItemType(),
-        currentOffset: monitor.getSourceClientOffset(),
+        currentOffset: monitor.getClientOffset(),
         isDragging: monitor.isDragging(),
     }
 }
@@ -40,8 +36,8 @@ class BlockDragLayer extends React.Component {
         }
         const { x, y } = currentOffset;
         return {
-            top: y + 50,
-            left: x + 50
+            top: y + 1,
+            left: x + 1
         };
     }
 

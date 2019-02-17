@@ -1,17 +1,22 @@
 .Heading{
-    height: 20rem;
-    z-index: 50;
+    height: 100%;
     border: .2rem solid #777;
-    position: absolute;
     background: white;
-    width: 95%;
-    margin: 1rem;
+    width: 100%;
+    overflow: hidden;
+    &:hover{
+        cursor: default;
+    }
     .Toolbar{
         display: flex;
         color: crimson;
         background: whitesmoke;
         border-bottom: .1rem solid #777;
         padding: .5rem;
+        height: 2rem;
+        &:hover{
+            cursor: move;
+        }
     }
     .Select{
         width: 2rem;
@@ -44,5 +49,11 @@
         &:hover{
             cursor: pointer;
         }
+    }
+    .Items{
+        position: relative;
+        overflow: hidden;
+        height: calc(100% - 2rem);
+        width: 100%;
     }
 }

@@ -14,5 +14,8 @@ export {
     moveItemInsideEditor,
     selectForMoving,
     unselectFromMoving,
-    setCoordinatesWhenDragging
+    setCoordinatesWhenDragging,
+    addFieldToBlock,
+    moveFieldInsideBlock,
+    deleteFieldFromBlock
 } from './creators/appStateCreatros'

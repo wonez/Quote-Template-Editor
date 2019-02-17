@@ -9,7 +9,10 @@ import { SIDE_MENU_SHOW_FIELDS,
         MOVE_ITEM_INSIDE_EDITOR,
         SELECT_FOR_MOVING,
         UNSELECT_FROM_MOVING,
-        SET_COORDINATES_WHEN_DRAGGING
+        SET_COORDINATES_WHEN_DRAGGING,
+        ADD_FIELD_TO_BLOCK,
+        MOVE_FIELD_INSIDE_BLOCK,
+        DELETE_FIELD_FROM_BLOCK
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -87,6 +90,27 @@ export const unselectFromMoving = (data) => {
 export const setCoordinatesWhenDragging = data => {
     return {
         type: SET_COORDINATES_WHEN_DRAGGING,
+        data
+    }
+}
+
+export const addFieldToBlock = data => {
+    return {
+        type: ADD_FIELD_TO_BLOCK,
+        data
+    }
+}
+
+export const moveFieldInsideBlock = coords => {
+    return {
+        type: MOVE_FIELD_INSIDE_BLOCK,
+        coords
+    }
+}
+
+export const deleteFieldFromBlock = data => {
+    return{
+        type: DELETE_FIELD_FROM_BLOCK,
         data
     }
 }

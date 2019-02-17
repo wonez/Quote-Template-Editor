@@ -1,8 +1,10 @@
 import React from 'react'
 
+import FieldSelector from '../FieldSelector/FieldSelector'
+
 const AllFields = (props) => {
     return(
-        <h1>AllFields</h1>
+        <FieldSelector kind="Text Input" itemType="TEXT_INPUT"/>
     )
 }
 
