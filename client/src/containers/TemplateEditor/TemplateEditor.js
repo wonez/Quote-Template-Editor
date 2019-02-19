@@ -4,12 +4,10 @@ import { connect } from 'react-redux'
 import {
     addItemToEditor,
     deleteItemFromEditor,
-    selectForEditing,
     moveItemInsideEditor,
-    deleteFieldFromBlock
+    deleteFieldFromBlock,
+    pageBreak
 } from '../../store'
-
-import Heading from '../../components/Blocks/Heading/Heading'
 
 import classes from './TemplateEditor.scss'
 
@@ -25,16 +23,18 @@ const editorTarget = {
             return;
         }
         if (props.selectedForDragging != '') { // add item to editor
-            calculatePositionAndAddItemToEditor(props.addItemToEditor, monitor.getClientOffset(), component, {
-                editorId: props.id,
-                kind: props.selectedForDragging,
-            });
+            if(props.selectedForDragging == 'Page Break'){
+                props.pageBreak(props.id)
+            }else{
+                calculatePositionAndAddItemToEditor(props.addItemToEditor, monitor.getClientOffset(), component, {
+                    editorId: props.id,
+                    kind: props.selectedForDragging,
+                });
+            }
         } else { // move item inside editor
             if(props.selectedForMoving.blockId){// move item from block to editor
-                // console.log(props.selectedForMoving);
                 calculatePositionAndAddItemToEditor(props.addItemToEditor, monitor.getSourceClientOffset(), component, {
-                    editorId: props.selectedForMoving.editorId,
-                    kind: props.selectedForMoving.kind
+                    ...props.selectedForMoving
                 })
                 props.deleteFieldFromBlock(props.selectedForMoving)
             }else{
@@ -47,7 +47,6 @@ const editorTarget = {
 
 const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component, data) => {
     const type = getItemType(data.kind);
-    // const source = monitor.getClientOffset()// x y client 
     const target = findDOMNode(component).getBoundingClientRect();// x y target
     addItemToEditor({
         editorId: data.editorId,
@@ -57,6 +56,7 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
             id: data.kind + Date.now(),
             x: source.x - target.x,
             y: source.y - target.y,
+            value: data.value ? data.value : 'Your Text'
         }
     })
 }
@@ -71,7 +71,7 @@ const getItemType = (text) => {
     } catch (i) {
         kind = kind.substring(0, i)
     }
-    if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms of Service'].indexOf(kind) != -1)
+    if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms Of Service'].indexOf(kind) != -1)
         return 'block'
     if(['Checkbox', 'Date Input', 'Dropdown Field', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
         return 'field'
@@ -94,16 +94,19 @@ class TemplateEditor extends React.Component {
                     let data = this.props.items[key];
                     if(data.type == 'block'){
                         return (
-                            <BlockGeneric editorId={this.props.id}
+                            <BlockGeneric 
+                                editorId={this.props.id}
                                 key={data.id}
                                 connectDropTarget={this.props.connectDropTarget}
-                                selectForEditing={() => { this.props.selectForEditing({ itemId: data.id, editorId: this.props.id }) }}
-                                deleteItemFromEditor={() => { this.props.deleteItemFromEditor({ itemId: data.id, editorId: this.props.id }) }}
+                                // deleteItemFromEditor={() => { this.props.deleteItemFromEditor({ itemId: data.id, editorId: this.props.id }) }}
                                 {...data} />
                         )
                     }else if(data.type == 'field'){
                         return(
-                            <FieldGeneric key={data.id} editorId={this.props.id} {...data}/>
+                            <FieldGeneric 
+                                editorId={this.props.id}
+                                key={data.id}
+                                {...data} />
                         )
                     }
                 })}
@@ -123,9 +126,9 @@ const mapDispatchToProps = dispatch => {
     return {
         addItemToEditor: (data) => dispatch(addItemToEditor(data)),
         deleteItemFromEditor: (data) => dispatch(deleteItemFromEditor(data)),
-        selectForEditing: data => dispatch(selectForEditing(data)),
         moveItemInsideEditor: data => dispatch(moveItemInsideEditor(data)),
-        deleteFieldFromBlock: data => dispatch(deleteFieldFromBlock(data))
+        deleteFieldFromBlock: data => dispatch(deleteFieldFromBlock(data)),
+        pageBreak: editorId => dispatch(pageBreak(editorId))
     }
 }
 

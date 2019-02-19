@@ -6,7 +6,9 @@ class TextInput extends React.Component{
     render(){
         return(
             <div className={classes.TextInput}>
-                <h1>Text</h1>
+                <textarea type="text" className={classes.Input} 
+                    value={this.props.value} 
+                    onChange={this.props.changeHandler} />
             </div>
         )
     }

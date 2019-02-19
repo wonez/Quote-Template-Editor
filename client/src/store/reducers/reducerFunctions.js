@@ -118,3 +118,47 @@ export const deleteFieldFromBlock = (oldState, data) => {
     delete newState.editors[data.editorId][data.blockId].children[data.itemId]
     return newState
 }
+
+export const pageBreak = (oldState, editorId) => {
+    const editors = {};
+    for(let key in oldState.editors){
+        editors[key] = oldState.editors[key];
+        if(key == editorId){
+            editors[`Editor${Date.now()}`] = {}
+        }
+    }
+    return{
+        ...oldState,
+        editors
+    }
+} 
+
+export const updateValue = (oldState, identifier, value) => {
+    const newState = {
+        ...oldState,
+        editors: {
+            ...oldState.editors,
+            [identifier.editorId]: {
+                ...oldState.editors[identifier.editorId]
+            }
+        }
+    }
+    if(identifier.blockId){//if in block
+        newState.editors[identifier.editorId][identifier.blockId] = {
+            ...oldState.editors[identifier.editorId][identifier.blockId],
+            children: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children,
+                [identifier.id]: {
+                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],                    
+                    value
+                }
+            } 
+        }
+    }else{// if not in block
+        newState.editors[identifier.editorId][identifier.id] = {
+            ...oldState.editors[identifier.editorId][identifier.id],
+            value
+        }
+    }
+    return newState;
+} 

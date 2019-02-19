@@ -1,21 +1,21 @@
 import React from 'react'
 
-import classes from './Paragraph.scss'
+import Toolbar from '../../Toolbar/Toolbar'
 
-import FieldGeneric from '../../FieldGeneric/FieldGeneric'
+import classes from './CoverPage.scss'
 
-class Paragraph extends React.Component {
+class CoverPage extends React.Component{
     render(){
         let toolbar = (
-            <div className={classes.Toolbar}>
-                <div className={classes.Select} onClick={this.props.selectForEditing}></div>
-                <p>Paragraph Block</p>
-                <div className={classes.Delete} onClick={this.props.deleteItemFromEditor}>Delete</div>
+            <div>
+                <Toolbar selectForEditing={this.props.selectForEditing} 
+                        title={"Cover Page"}
+                        deleteItemFromEditor={this.props.deleteItemFromEditor} /> 
             </div>
         )
-
+            // preappend children bg image, title, subtitle, customer name, user company logo, text area
         return (
-            <div className={classes.Paragraph} >
+            <div className={classes.CoverPage} >
                 {this.props.connectDragSource ? this.props.connectDragSource(toolbar) : toolbar}
                 <div className={classes.Items}>
                     {this.props.children ? (
@@ -29,4 +29,4 @@ class Paragraph extends React.Component {
     }
 }
 
-export default Paragraph;
+export default CoverPage;

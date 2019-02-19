@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { selectForMoving, unselectFromMoving, addFieldToBlock, moveFieldInsideBlock, deleteFieldFromBlock, deleteItemFromEditor } from '../../store'
 
-import Heading from '../Blocks/Heading/Heading'
+import KindToDom from '../KindToDom/KindToDom'
 
 import { ItemTypes } from '../../dnd/types'
 import { DragSource, DropTarget } from 'react-dnd'
@@ -42,7 +42,8 @@ const target = {
 			calculatePositionAndAddFieldToBlock(props.addFieldToBlock, monitor.getClientOffset(), component, {
 				kind: props.selectedForDragging,
 				blockId: props.id,
-				editorId: props.editorId
+				editorId: props.editorId,
+				value: 'Text'
 			})
 		} else { 
 			try{ //Move field inside block
@@ -56,6 +57,7 @@ const target = {
 					kind: props.selectedForMoving.kind,
 					blockId: props.id,
 					editorId: props.editorId,
+					value: props.selectedForMoving.value
 				})
 				if(props.selectedForMoving.blockId){//Move field from block to block	
 					props.deleteFieldFromBlock(props.selectedForMoving);
@@ -77,32 +79,37 @@ const calculatePositionAndAddFieldToBlock = (addFieldToBlock, client, component,
 		newItem: {
 			kind: data.kind,
 			id: data.kind + Date.now(),
+			value: data.value,
 			x,
-			y
+			y,
 		}
 	})
 }
 
 class BlockGeneric extends React.Component {
-
-	getCorrespondingItem = (kind) => {
-		switch (kind) {
-			case 'Heading': return <Heading
-				editorId={this.props.editorId}
-				id={this.props.id}
-				connectDragSource={this.props.connectDragSource}
-				selectForEditing={this.props.selectForEditing}
-				deleteItemFromEditor={this.props.deleteItemFromEditor}
-				children={this.props.children}
-			/>
-			default: return <p style="border: 1px solid red;">Aaaa sve</p>
-		}
-	}
-
 	render() {
+		let style = { 
+			top: this.props.y, 
+			left: this.props.x, 
+			...this.props.style 
+		}
+		if(this.props.kind == 'Heading'){
+			style.height = '10rem';
+		}
+		if(this.props.kind == 'Cover Page'){
+			style.height = "95%";
+		}
 		return this.props.connectDropTarget(this.props.connectDragPreview(
-			<div className={classes.BlockGeneric} style={{ top: this.props.y, left: this.props.x, cursor: 'move', ...this.props.style }}>
-				{this.getCorrespondingItem(this.props.kind)}
+			<div className={classes.BlockGeneric} style={style}>
+				<KindToDom 
+					kind={this.props.kind}
+					type={this.props.type}
+					editorId={this.props.editorId}
+					id={this.props.id}
+					connectDragSource={this.props.connectDragSource}
+					selectForEditing={this.props.selectForEditing}
+					deleteItemFromEditor={() => this.props.deleteItemFromEditor({editorId: this.props.editorId, itemId: this.props.id})}
+					children={this.props.children} />
 			</div>
 		))
 	}

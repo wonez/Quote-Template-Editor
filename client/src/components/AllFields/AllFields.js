@@ -4,7 +4,14 @@ import FieldSelector from '../FieldSelector/FieldSelector'
 
 const AllFields = (props) => {
     return(
-        <FieldSelector kind="Text Input" itemType="TEXT_INPUT"/>
+        <div>
+            <FieldSelector kind="Text Input" />
+            <FieldSelector kind="Date Input" />
+            <FieldSelector kind="Initials Input" />
+            <FieldSelector kind="Signature Input" />
+            <FieldSelector kind="Checkbox Input" />
+            <FieldSelector kind="Dprodown Input" />
+        </div>
     )
 }
 

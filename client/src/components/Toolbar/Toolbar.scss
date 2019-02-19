@@ -1,0 +1,43 @@
+.Toolbar{
+    display: flex;
+    color: crimson;
+    background: whitesmoke;
+    border-bottom: .1rem solid #777;
+    padding: .5rem;
+    height: 2rem;
+    &:hover{
+        cursor: move;
+    }
+}
+.Select{
+    width: 2rem;
+    height: .2rem;
+    background: crimson;
+    margin-right: 1rem;
+    position: relative;
+    &:hover{
+        cursor: pointer;
+    }
+    &::before, &::after{
+        content: '';
+        display: block;
+        width: 2rem;
+        height: .2rem;
+        background: crimson;
+        position: absolute;
+    }
+    &::after{
+        top: 4px;
+        left: 0;
+    }
+    &::before{
+        top: 8px;
+        left: 0;
+    }
+}
+.Delete{
+    margin-left: auto;
+    &:hover{
+        cursor: pointer;
+    }
+}

@@ -1,21 +1,22 @@
 import React from 'react'
 
-import classes from './Paragraph.scss'
-
+import Toolbar from '../../Toolbar/Toolbar'
 import FieldGeneric from '../../FieldGeneric/FieldGeneric'
 
-class Paragraph extends React.Component {
+import classes from './Image.scss'
+
+class Image extends React.Component{
     render(){
         let toolbar = (
-            <div className={classes.Toolbar}>
-                <div className={classes.Select} onClick={this.props.selectForEditing}></div>
-                <p>Paragraph Block</p>
-                <div className={classes.Delete} onClick={this.props.deleteItemFromEditor}>Delete</div>
+            <div>
+                <Toolbar selectForEditing={this.props.selectForEditing} 
+                        title={"Image Block"}
+                        deleteItemFromEditor={this.props.deleteItemFromEditor} /> 
             </div>
         )
 
         return (
-            <div className={classes.Paragraph} >
+            <div className={classes.Image} >
                 {this.props.connectDragSource ? this.props.connectDragSource(toolbar) : toolbar}
                 <div className={classes.Items}>
                     {this.props.children ? (
@@ -26,7 +27,7 @@ class Paragraph extends React.Component {
                 </div>
             </div>
         )
-    }
+    }  
 }
 
-export default Paragraph;
+export default Image;

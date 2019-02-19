@@ -1,0 +1,15 @@
+.PageBreak{
+    border-top: 1px dashed #777;
+    position: relative;
+    &::after{
+        position: absolute;
+        content: 'Page Break';
+        color: black;
+        background: transparent;
+        text-align: center;
+        width: 5rem;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
+}

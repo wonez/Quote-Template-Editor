@@ -9,6 +9,7 @@ import BlockDragPreview from '../BlockDragPreview/BlockDragPreview'
 import { setCoordinatesWhenDragging } from '../../store'
 
 import { DragLayer } from 'react-dnd';
+import KindToDom from '../KindToDom/KindToDom'
 
 
 const collect = (monitor, props) => {
@@ -47,8 +48,14 @@ class BlockDragLayer extends React.Component {
             return null
         }
 
+        let style = this.getItemStyles();
+
+        if(this.props.selectedForDragging == 'Cover Page'){
+            style.height = "85%";
+        }
+
         return (
-            <div className={classes.BlockDragLayer} style={this.getItemStyles()}>
+            <div className={classes.BlockDragLayer} style={style}>
                 <BlockDragPreview type={this.props.selectedForDragging}/>
             </div>
         );

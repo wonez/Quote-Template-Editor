@@ -12,7 +12,9 @@ import { SIDE_MENU_SHOW_FIELDS,
         SET_COORDINATES_WHEN_DRAGGING,
         ADD_FIELD_TO_BLOCK,
         MOVE_FIELD_INSIDE_BLOCK,
-        DELETE_FIELD_FROM_BLOCK
+        DELETE_FIELD_FROM_BLOCK,
+        PAGE_BREAK,
+        UPDATE_VALUE
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -112,5 +114,20 @@ export const deleteFieldFromBlock = data => {
     return{
         type: DELETE_FIELD_FROM_BLOCK,
         data
+    }
+}
+
+export const pageBreak = editorId => {
+    return {
+        type: PAGE_BREAK,
+        editorId
+    }
+}
+
+export const updateValue =(identifier, value) => {
+    return{
+        type: UPDATE_VALUE,
+        identifier,
+        value
     }
 }

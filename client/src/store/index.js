@@ -17,5 +17,7 @@ export {
     setCoordinatesWhenDragging,
     addFieldToBlock,
     moveFieldInsideBlock,
-    deleteFieldFromBlock
+    deleteFieldFromBlock,
+    pageBreak,
+    updateValue
 } from './creators/appStateCreatros'

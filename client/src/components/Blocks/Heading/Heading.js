@@ -2,19 +2,19 @@ import React from 'react'
 
 import classes from './Heading.scss'
 
+import Toolbar from '../../Toolbar/Toolbar'
 import FieldGeneric from '../../FieldGeneric/FieldGeneric'
+
 
 class Heading extends React.Component {
     render(){
-
         let toolbar = (
-            <div className={classes.Toolbar}>
-                <div className={classes.Select} onClick={this.props.selectForEditing}></div>
-                <p>Heading Block</p>
-                <div className={classes.Delete} onClick={this.props.deleteItemFromEditor}>Delete</div>
+            <div>
+                <Toolbar selectForEditing={this.props.selectForEditing} 
+                        title={"Heading Block"}
+                        deleteItemFromEditor={this.props.deleteItemFromEditor} /> 
             </div>
         )
-
         return (
             <div className={classes.Heading} >
                 {this.props.connectDragSource ? this.props.connectDragSource(toolbar) : toolbar}
