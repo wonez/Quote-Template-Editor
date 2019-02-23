@@ -13,7 +13,8 @@ import { SIDE_MENU_SHOW_BLOCKS,
         ADD_FIELD_TO_BLOCK,
         DELETE_FIELD_FROM_BLOCK,
         PAGE_BREAK,
-        UPDATE_VALUE
+        UPDATE_VALUE,
+        UPDATE_STYLES
     } from '../types/appStateTypes'
 
 import { changeSingleField, 
@@ -24,7 +25,8 @@ import { changeSingleField,
         moveFieldInsideBlock,
         deleteFieldFromBlock,
         pageBreak,
-        updateValue
+        updateValue,
+        updateStyles
     } from './reducerFunctions'
 
 const initialState = {
@@ -71,6 +73,11 @@ const reducer = (state = initialState, action) => {
             return pageBreak(state, action.editorId) 
         case UPDATE_VALUE:
             return updateValue(state, action.identifier, action.value)
+        case UPDATE_STYLES: 
+            return updateStyles(state, action.identifier, action.value)
+
+
+
         default: 
             return state;
     }

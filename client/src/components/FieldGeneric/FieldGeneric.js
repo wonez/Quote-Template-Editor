@@ -37,22 +37,56 @@ class FieldGeneric extends React.Component{
         }, e.target.value);
     }
 
-    selectForEditing = (e) => {
-        e.stopPropagation();
-        this.props.selectForEditing({
-            id: this.props.id,
-            editorId: this.props.editorId,
-            blockId: this.props.blockId
-        })
-    }
+	clickHandler = e => {
+		e.stopPropagation();
+	}
+
+    // selectForEditing = (e) => {
+    //     e.stopPropagation();
+    //     this.props.selectForEditing({
+    //         id: this.props.id,
+    //         editorId: this.props.editorId,
+    //         blockId: this.props.blockId
+    //     })
+    // }
 
     render(){
+        let style = null
+        if(this.props.blockStyles.textAlign == 'center'){
+            style = {
+                position: 'absolute', 
+                left: '50%',
+                transform: 'translateX(-50%)', 
+                top: this.props.y
+            }
+        } else if(this.props.blockStyles.textAlign == 'left'){
+            style = {
+                position: 'absolute', 
+                left: 5, 
+                top: this.props.y
+            }
+        } else if(this.props.blockStyles.textAlign == 'right'){
+            style = {
+                position: 'absolute', 
+                right: 5, 
+                top: this.props.y
+            }
+        } else {
+            style = {
+                position: 'absolute', 
+                left: this.props.x, 
+                top: this.props.y
+            }
+        }
+
         return this.props.connectDragSource(
             <div key={this.props.id} 
-                onClick={this.selectForEditing}
+                // onClick={this.selectForEditing}
+                onClick={this.clickHandler}
                 className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
-                style={{ position: 'absolute', left: this.props.x, top: this.props.y}}>
+                style={style}>
                 <KindToDom 
+                    blockStyles={this.props.blockStyles}
                     focused={this.props.selectedForEditing.id == this.props.id}
                     kind={this.props.kind}
                     type={this.props.type}
@@ -72,7 +106,8 @@ class FieldGeneric extends React.Component{
 const mapStateToProps = (state, props) => {
     return {
         selectedForEditing: state.appState.selectedForEditing, /// if inside block : else outside of block
-        value: props.blockId ? state.appState.editors[props.editorId][props.blockId].children[props.id].value : state.appState.editors[props.editorId][props.id].value
+        value: props.blockId ? state.appState.editors[props.editorId][props.blockId].children[props.id].value : state.appState.editors[props.editorId][props.id].value,
+        blockStyles: props.blockId ? state.appState.editors[props.editorId][props.blockId].styles : {}
     }
 }
 

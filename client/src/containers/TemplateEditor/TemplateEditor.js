@@ -6,7 +6,8 @@ import {
     deleteItemFromEditor,
     moveItemInsideEditor,
     deleteFieldFromBlock,
-    pageBreak
+    pageBreak,
+    selectForEditing
 } from '../../store'
 
 import classes from './TemplateEditor.scss'
@@ -48,7 +49,7 @@ const editorTarget = {
 const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component, data) => {
     const type = getItemType(data.kind);
     const target = findDOMNode(component).getBoundingClientRect();// x y target
-    addItemToEditor({
+    const argument = {
         editorId: data.editorId,
         newItem: {
             type,
@@ -56,9 +57,22 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
             id: data.kind + Date.now(),
             x: source.x - target.x,
             y: source.y - target.y,
-            value: data.value ? data.value : 'Your Text'
         }
-    })
+    }
+    if(type == 'block'){
+        argument.newItem.styles = {
+            fontSize: 10,
+            textAlign: 'free',
+            color: '#000000',
+            fontFamily: 'Times New Roman'
+        }
+    }else{
+        argument.newItem.value = data.value ? data.value : 'Your Text';
+        argument.newItem.styles = {
+            background: '#eeeeee'
+        }
+    }
+    addItemToEditor(argument)
 }
 
 const getItemType = (text) => {
@@ -89,7 +103,7 @@ class TemplateEditor extends React.Component {
 
     render() {
         return this.props.connectDropTarget(
-            <div className={classes.TemplateEditor}>
+            <div className={classes.TemplateEditor} onClick={this.props.selectForEditing}>
                 {Object.keys(this.props.items).map(key => {
                     let data = this.props.items[key];
                     if(data.type == 'block'){
@@ -128,7 +142,8 @@ const mapDispatchToProps = dispatch => {
         deleteItemFromEditor: (data) => dispatch(deleteItemFromEditor(data)),
         moveItemInsideEditor: data => dispatch(moveItemInsideEditor(data)),
         deleteFieldFromBlock: data => dispatch(deleteFieldFromBlock(data)),
-        pageBreak: editorId => dispatch(pageBreak(editorId))
+        pageBreak: editorId => dispatch(pageBreak(editorId)),
+        selectForEditing: () => dispatch(selectForEditing({}))
     }
 }
 

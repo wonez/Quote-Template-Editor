@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import classes from './sidebarMenu.scss'
-import { showBLocks, showFields } from '../../store';
+import { showBLocks, showFields, selectForEditing } from '../../store';
 
 const SidebarMenu = (props) => {
     return (
@@ -22,8 +22,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        showBlocks: () => dispatch(showBLocks()),
-        showFields: () => dispatch(showFields())
+        showBlocks: () => { dispatch(showBLocks()); dispatch(selectForEditing({})) },
+        showFields: () => { dispatch(showFields()); dispatch(selectForEditing({}))}
     }
 }
 

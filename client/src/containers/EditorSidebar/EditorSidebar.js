@@ -15,7 +15,6 @@ class EditorSidebar extends React.Component{
     
     render(){
         
-        // let content = this.props.sideMenu == 'blocks' ? <AllBlocks /> : <AllFields />;
         let content = null;
 
         if(this.props.selectedForEditing.id){

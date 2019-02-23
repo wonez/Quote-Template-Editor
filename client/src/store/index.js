@@ -19,5 +19,6 @@ export {
     moveFieldInsideBlock,
     deleteFieldFromBlock,
     pageBreak,
-    updateValue
+    updateValue,
+    updateStyles
 } from './creators/appStateCreatros'

@@ -2,7 +2,13 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux';
 
-import { selectForMoving, unselectFromMoving, addFieldToBlock, moveFieldInsideBlock, deleteFieldFromBlock, deleteItemFromEditor } from '../../store'
+import { selectForMoving, 
+		unselectFromMoving, 
+		addFieldToBlock, 
+		moveFieldInsideBlock, 
+		deleteFieldFromBlock, 
+		deleteItemFromEditor,
+		selectForEditing } from '../../store'
 
 import KindToDom from '../KindToDom/KindToDom'
 
@@ -43,7 +49,7 @@ const target = {
 				kind: props.selectedForDragging,
 				blockId: props.id,
 				editorId: props.editorId,
-				value: 'Text'
+				value: 'Your Text'
 			})
 		} else { 
 			try{ //Move field inside block
@@ -87,11 +93,36 @@ const calculatePositionAndAddFieldToBlock = (addFieldToBlock, client, component,
 }
 
 class BlockGeneric extends React.Component {
+
+	selectForEditing = (e) => {
+		e.stopPropagation();
+		this.props.selectForEditing({
+			editorId: this.props.editorId,
+			id: this.props.id,
+			kind: this.props.kind,
+			type: this.props.type
+		})
+	}
+
+	deleteItemFromEditor = (e) => {
+		e.stopPropagation();
+		this.props.deleteItemFromEditor({
+			editorId: this.props.editorId, 
+			itemId: this.props.id
+		})
+	}
+
+	clickHandler = e => {
+		e.stopPropagation();
+	}
+
 	render() {
 		let style = { 
 			top: this.props.y, 
 			left: this.props.x, 
-			...this.props.style 
+			...this.props.style,
+			...this.props.styles,
+			fontSize: this.props.styles.fontSize + 'px'
 		}
 		if(this.props.kind == 'Heading'){
 			style.height = '10rem';
@@ -99,16 +130,21 @@ class BlockGeneric extends React.Component {
 		if(this.props.kind == 'Cover Page'){
 			style.height = "95%";
 		}
+		if(this.props.selectedForEditing.id == this.props.id){
+			style.outline = '.3rem solid skyblue';
+		}
 		return this.props.connectDropTarget(this.props.connectDragPreview(
-			<div className={classes.BlockGeneric} style={style}>
+			<div className={classes.BlockGeneric}
+				onClick={this.clickHandler} 
+				style={style}>
 				<KindToDom 
 					kind={this.props.kind}
 					type={this.props.type}
 					editorId={this.props.editorId}
 					id={this.props.id}
+					selectForEditing={this.selectForEditing}
 					connectDragSource={this.props.connectDragSource}
-					selectForEditing={this.props.selectForEditing}
-					deleteItemFromEditor={() => this.props.deleteItemFromEditor({editorId: this.props.editorId, itemId: this.props.id})}
+					deleteItemFromEditor={this.deleteItemFromEditor}
 					children={this.props.children} />
 			</div>
 		))
@@ -119,6 +155,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		selectForMoving: (data) => dispatch(selectForMoving(data)),
 		unselectFromMoving: () => dispatch(unselectFromMoving()),
+		selectForEditing: (data) => dispatch(selectForEditing(data)),
 		addFieldToBlock: data => dispatch(addFieldToBlock(data)),
 		moveFieldInsideBlock: coords => dispatch(moveFieldInsideBlock(coords)),
 		deleteFieldFromBlock: data => dispatch(deleteFieldFromBlock(data)),
@@ -126,10 +163,12 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
 	return {
 		selectedForDragging: state.appState.selectedForDragging,
-		selectedForMoving: state.appState.selectedForMoving
+		selectedForMoving: state.appState.selectedForMoving,
+		selectedForEditing: state.appState.selectedForEditing,
+		styles: state.appState.editors[props.editorId][props.id].styles
 	}
 }
 

@@ -14,7 +14,8 @@ import { SIDE_MENU_SHOW_FIELDS,
         MOVE_FIELD_INSIDE_BLOCK,
         DELETE_FIELD_FROM_BLOCK,
         PAGE_BREAK,
-        UPDATE_VALUE
+        UPDATE_VALUE,
+        UPDATE_STYLES
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -127,6 +128,14 @@ export const pageBreak = editorId => {
 export const updateValue =(identifier, value) => {
     return{
         type: UPDATE_VALUE,
+        identifier,
+        value
+    }
+}
+
+export const updateStyles = (identifier, value) => {
+    return{
+        type: UPDATE_STYLES,
         identifier,
         value
     }

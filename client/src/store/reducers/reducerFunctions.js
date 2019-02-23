@@ -162,3 +162,23 @@ export const updateValue = (oldState, identifier, value) => {
     }
     return newState;
 } 
+
+
+export const updateStyles = (oldState, identifier, value) => {
+    return {
+        ...oldState,
+        editors:{
+            ...oldState.editors,
+            [identifier.editorId]: {
+                ...oldState.editors[identifier.editorId],
+                [identifier.id]: {
+                    ...oldState.editors[identifier.editorId][identifier.id],
+                    styles:{
+                        ...oldState.editors[identifier.editorId][identifier.id].styles,
+                        [value.key]: value.val
+                    }
+                }
+            }
+        }
+    }
+}

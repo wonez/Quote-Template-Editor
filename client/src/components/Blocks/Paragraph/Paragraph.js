@@ -7,10 +7,10 @@ import FieldGeneric from '../../FieldGeneric/FieldGeneric'
 class Paragraph extends React.Component {
     render(){
         let toolbar = (
-            <div className={classes.Toolbar}>
-                <div className={classes.Select} onClick={this.props.selectForEditing}></div>
-                <p>Paragraph Block</p>
-                <div className={classes.Delete} onClick={this.props.deleteItemFromEditor}>Delete</div>
+            <div>
+                <Toolbar selectForEditing={this.props.selectForEditing} 
+                        title={"Paragraph Block"}
+                        deleteItemFromEditor={this.props.deleteItemFromEditor} /> 
             </div>
         )
 

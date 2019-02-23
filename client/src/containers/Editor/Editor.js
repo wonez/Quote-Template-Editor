@@ -2,9 +2,9 @@ import React from 'react'
 
 import TemplateList from '../TemplateList/TemplateList'
 import EditorSidebar from '../EditorSidebar/EditorSidebar'
+import TemplateEditorList from '../TemplateEditorList/TemplateEditorList';
 
 import classes from './Editor.scss'
-import TemplateEditorList from '../TemplateEditorList/TemplateEditorList';
 
 class Editor extends React.Component{
     render(){

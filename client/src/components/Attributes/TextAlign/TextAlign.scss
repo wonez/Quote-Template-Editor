@@ -1,0 +1,15 @@
+.TextAlign{
+    display: flex;
+    align-items: center; 
+    button{
+        padding: .5rem;
+    }
+    .Alignments{
+        display: flex;
+        margin-left: auto;
+    }
+    .Active{
+        background: black;
+        color: white;
+    }
+}

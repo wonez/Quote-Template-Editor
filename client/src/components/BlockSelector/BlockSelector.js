@@ -36,7 +36,7 @@ class BlockSelector extends React.Component{
     
     render(){
         return this.props.connectDragSource(
-            <div className={classes.BlockSelector}>
+            <div className={classes.BlockSelector} >
                 {this.props.kind}
             </div>
         )

@@ -33,10 +33,10 @@ class FieldSelector extends React.Component{
         //hide default drag preview
         this.props.connectDragPreview(getEmptyImage())
     }
-    
+
     render(){
         return this.props.connectDragSource(
-            <div className={classes.FieldSelector}>
+            <div className={classes.FieldSelector} >
                 {this.props.kind}
             </div>
         )
