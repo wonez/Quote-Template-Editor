@@ -1,16 +1,9 @@
 .Heading{
     height: 100%;
     border: .2rem solid #777;
-    background: white;
     width: 100%;
     overflow: hidden;
     &:hover{
         cursor: default;
-    }
-    .Items{
-        position: relative;
-        overflow: hidden;
-        height: calc(100% - 2rem);
-        width: 100%;
     }
 }

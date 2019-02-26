@@ -17,7 +17,7 @@ export {
     setCoordinatesWhenDragging,
     addFieldToBlock,
     moveFieldInsideBlock,
-    deleteFieldFromBlock,
+    moveField,
     pageBreak,
     updateValue,
     updateStyles

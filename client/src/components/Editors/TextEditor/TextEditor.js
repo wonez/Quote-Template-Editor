@@ -7,6 +7,7 @@ import FontSize from '../../Attributes/FontSize/FontSize'
 import Color from '../../Attributes/Color/Color'
 import FontFamily from '../../Attributes/FontFamily/FontFamily'
 import TextAlign from '../../Attributes/TextAlign/TextAlign'
+import BackgroundColor from '../../Attributes/BackgroundColor/BackgroundColor';
 
 class TextEditor extends React.Component{
 
@@ -37,6 +38,13 @@ class TextEditor extends React.Component{
             val: e.target.dataset.val
         })
     }
+
+    updateBackgroundColor = e => {
+        this.props.updateStyles({...this.props.selectedForEditing}, {
+            key: 'backgroundColor',
+            val: e.target.value
+        })
+    }
     
     render(){
         return(
@@ -45,6 +53,7 @@ class TextEditor extends React.Component{
                 <Color value={this.props.styles.color} changeHandler={this.updateColor} />
                 <FontFamily value={this.props.styles.fontFamily} changeHandler={this.updateFontFamily} />
                 <TextAlign value={this.props.styles.textAlign} changeHandler={this.updateTextAlign} />
+                <BackgroundColor value={this.props.styles.backgroundColor} changeHandler={this.updateBackgroundColor} />
             </div>
         )
     }

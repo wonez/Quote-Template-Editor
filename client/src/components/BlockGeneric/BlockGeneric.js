@@ -6,9 +6,9 @@ import { selectForMoving,
 		unselectFromMoving, 
 		addFieldToBlock, 
 		moveFieldInsideBlock, 
-		deleteFieldFromBlock, 
 		deleteItemFromEditor,
-		selectForEditing } from '../../store'
+		selectForEditing,
+		moveField } from '../../store'
 
 import KindToDom from '../KindToDom/KindToDom'
 
@@ -19,12 +19,12 @@ import classes from './BlockGeneric.scss'
 
 const source = {
 	beginDrag(props, monitor, component) {
-		props.selectForMoving({ itemId: props.id, editorId: props.editorId });
+		props.selectForMoving({ id: props.id, editorId: props.editorId });
 		return {};
 	},
 	endDrag(props, monitor, component) {
 		props.unselectFromMoving();
-	}
+	} 
 };
 
 const collect = (connect, monitor) => {
@@ -45,51 +45,62 @@ const collectDrop = (connect, monitor) => {
 const target = {
 	drop(props, monitor, component) {
 		if (props.selectedForDragging != '') { // Adding field to block
-			calculatePositionAndAddFieldToBlock(props.addFieldToBlock, monitor.getClientOffset(), component, {
-				kind: props.selectedForDragging,
-				blockId: props.id,
+			props.addFieldToBlock({
 				editorId: props.editorId,
-				value: 'Your Text'
+				blockId: props.id,
+				newItem: {
+					kind: props.selectedForDragging,
+					id: props.selectedForDragging + Date.now(),
+					value: 'Your Text',
+					type: getItemType(props.selectedForDragging),
+					...getCoords(component, monitor.getClientOffset()),
+					styles: {
+						backgroundColor: '#eeeeee',
+						fontSize: props.styles.fontSize,
+						color: props.styles.color
+					},
+				}
 			})
 		} else { 
 			try{ //Move field inside block
-				if (props.children[props.selectedForMoving.itemId]) {
+				if (props.children[props.selectedForMoving.id]) {
 					props.moveFieldInsideBlock(monitor.getDifferenceFromInitialOffset());
 				} else {
 					throw new Error();
 				}
 			} catch(err) { // Move field
-				calculatePositionAndAddFieldToBlock(props.addFieldToBlock, monitor.getSourceClientOffset(), component, {
-					kind: props.selectedForMoving.kind,
+				props.moveField({
 					blockId: props.id,
 					editorId: props.editorId,
-					value: props.selectedForMoving.value
-				})
-				if(props.selectedForMoving.blockId){//Move field from block to block	
-					props.deleteFieldFromBlock(props.selectedForMoving);
-				}else{//Move field from template to block
-					props.deleteItemFromEditor(props.selectedForMoving)
-				}		
+					coords: getCoords(component, monitor.getSourceClientOffset())
+				});
 			}
 		}
 	}
 };
 
-const calculatePositionAndAddFieldToBlock = (addFieldToBlock, client, component, data) => {
+const getCoords = (component, client) => {
 	const target = findDOMNode(component).getBoundingClientRect();
 	let x = client.x - target.x;
-	let y = client.y - target.y - 20; //-2rem 
-	addFieldToBlock({
-		editorId: data.editorId,
-		blockId: data.blockId,
-		newItem: {
-			kind: data.kind,
-			id: data.kind + Date.now(),
-			value: data.value,
-			x,
-			y,
-		}
-	})
+	let y = client.y - target.y - 20; //-2rem
+	return { x,y }
+}
+
+const getItemType = (text) => {
+    let kind = text;
+    try {
+        Array.from(kind).forEach((chr, i) => {
+            if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].indexOf(chr) != -1)
+                throw i;
+        })
+    } catch (i) {
+        kind = kind.substring(0, i)
+    }
+    if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms Of Service'].indexOf(kind) != -1)
+        return 'block'
+    if(['Checkbox', 'Date Input', 'Dropdown Field', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
+        return 'field'
+    return null;
 }
 
 class BlockGeneric extends React.Component {
@@ -108,12 +119,8 @@ class BlockGeneric extends React.Component {
 		e.stopPropagation();
 		this.props.deleteItemFromEditor({
 			editorId: this.props.editorId, 
-			itemId: this.props.id
+			id: this.props.id
 		})
-	}
-
-	clickHandler = e => {
-		e.stopPropagation();
 	}
 
 	render() {
@@ -135,14 +142,14 @@ class BlockGeneric extends React.Component {
 		}
 		return this.props.connectDropTarget(this.props.connectDragPreview(
 			<div className={classes.BlockGeneric}
-				onClick={this.clickHandler} 
+				onClick={this.selectForEditing} 
 				style={style}>
 				<KindToDom 
 					kind={this.props.kind}
 					type={this.props.type}
 					editorId={this.props.editorId}
 					id={this.props.id}
-					selectForEditing={this.selectForEditing}
+					// selectForEditing={this.selectForEditing}
 					connectDragSource={this.props.connectDragSource}
 					deleteItemFromEditor={this.deleteItemFromEditor}
 					children={this.props.children} />
@@ -158,8 +165,8 @@ const mapDispatchToProps = dispatch => {
 		selectForEditing: (data) => dispatch(selectForEditing(data)),
 		addFieldToBlock: data => dispatch(addFieldToBlock(data)),
 		moveFieldInsideBlock: coords => dispatch(moveFieldInsideBlock(coords)),
-		deleteFieldFromBlock: data => dispatch(deleteFieldFromBlock(data)),
-		deleteItemFromEditor: data => dispatch(deleteItemFromEditor(data))
+		deleteItemFromEditor: data => dispatch(deleteItemFromEditor(data)),
+		moveField: target => dispatch(moveField(target))
 	}
 }
 

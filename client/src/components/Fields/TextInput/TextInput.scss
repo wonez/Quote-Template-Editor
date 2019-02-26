@@ -2,25 +2,13 @@
     .Input{
         padding: .5rem;
         outline: 0;
-        background: #eee;
         border: none;
         resize: none;
         &:focus{
             resize: both;
-            outline: 1px solid skyblue;
         }
         &:hover{
             cursor: pointer;
         }
-        &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-            background-color: white;
-            width: 8px;
-            height: 100%;
-          }
     }
 }

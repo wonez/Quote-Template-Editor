@@ -11,7 +11,7 @@ import { SIDE_MENU_SHOW_BLOCKS,
         UNSELECT_FROM_MOVING,
         MOVE_FIELD_INSIDE_BLOCK,
         ADD_FIELD_TO_BLOCK,
-        DELETE_FIELD_FROM_BLOCK,
+        MOVE_FIELD,
         PAGE_BREAK,
         UPDATE_VALUE,
         UPDATE_STYLES
@@ -23,10 +23,10 @@ import { changeSingleField,
         moveItemInsideEditor,
         addFieldToBlock,
         moveFieldInsideBlock,
-        deleteFieldFromBlock,
         pageBreak,
         updateValue,
-        updateStyles
+        updateStyles,
+        moveField
     } from './reducerFunctions'
 
 const initialState = {
@@ -67,14 +67,14 @@ const reducer = (state = initialState, action) => {
             return addFieldToBlock(state, action.data)
         case MOVE_FIELD_INSIDE_BLOCK:
             return moveFieldInsideBlock(state, action.coords)
-        case DELETE_FIELD_FROM_BLOCK:
-            return deleteFieldFromBlock(state, action.data)
         case PAGE_BREAK:
             return pageBreak(state, action.editorId) 
         case UPDATE_VALUE:
             return updateValue(state, action.identifier, action.value)
         case UPDATE_STYLES: 
             return updateStyles(state, action.identifier, action.value)
+        case MOVE_FIELD:
+            return moveField(state, action.target)
 
 
 

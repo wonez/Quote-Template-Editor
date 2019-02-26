@@ -12,7 +12,7 @@ import { selectForMoving, unselectFromMoving, updateValue, selectForEditing } fr
 
 const source = {
     beginDrag(props, monitor, component) {
-      props.selectForMoving({ kind: props.kind, itemId: props.id, editorId: props.editorId, blockId: props.blockId, value: props.value });
+      props.selectForMoving({ kind: props.kind, id: props.id, editorId: props.editorId, blockId: props.blockId, value: props.value });
       return {};
     },
     endDrag(props, monitor, component) {
@@ -37,52 +37,40 @@ class FieldGeneric extends React.Component{
         }, e.target.value);
     }
 
-	clickHandler = e => {
-		e.stopPropagation();
-	}
-
-    // selectForEditing = (e) => {
-    //     e.stopPropagation();
-    //     this.props.selectForEditing({
-    //         id: this.props.id,
-    //         editorId: this.props.editorId,
-    //         blockId: this.props.blockId
-    //     })
-    // }
+    selectForEditing = (e) => {
+        e.stopPropagation();
+        this.props.selectForEditing({
+            id: this.props.id,
+            editorId: this.props.editorId,
+            blockId: this.props.blockId,
+			kind: this.props.kind,
+			type: this.props.type
+        })
+    }
 
     render(){
-        let style = null
+        let style = {
+            position: 'absolute',
+            top: this.props.y,
+            ...this.props.styles
+        }
         if(this.props.blockStyles.textAlign == 'center'){
-            style = {
-                position: 'absolute', 
-                left: '50%',
-                transform: 'translateX(-50%)', 
-                top: this.props.y
-            }
+            style.left = '50%';
+            style.transform = 'translateX(-50%)'; 
         } else if(this.props.blockStyles.textAlign == 'left'){
-            style = {
-                position: 'absolute', 
-                left: 5, 
-                top: this.props.y
-            }
+            style.left = 5; 
         } else if(this.props.blockStyles.textAlign == 'right'){
-            style = {
-                position: 'absolute', 
-                right: 5, 
-                top: this.props.y
-            }
+            style.right = 5; 
         } else {
-            style = {
-                position: 'absolute', 
-                left: this.props.x, 
-                top: this.props.y
-            }
+            style.left = this.props.x;
+        }
+        if(style.fontSize){
+            style.fontSize = style.fontSize+'px';
         }
 
         return this.props.connectDragSource(
             <div key={this.props.id} 
-                // onClick={this.selectForEditing}
-                onClick={this.clickHandler}
+                onClick={this.selectForEditing}
                 className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
                 style={style}>
                 <KindToDom 

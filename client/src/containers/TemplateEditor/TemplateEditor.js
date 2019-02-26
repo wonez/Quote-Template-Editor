@@ -5,9 +5,9 @@ import {
     addItemToEditor,
     deleteItemFromEditor,
     moveItemInsideEditor,
-    deleteFieldFromBlock,
     pageBreak,
-    selectForEditing
+    selectForEditing,
+    moveField
 } from '../../store'
 
 import classes from './TemplateEditor.scss'
@@ -34,10 +34,10 @@ const editorTarget = {
             }
         } else { // move item inside editor
             if(props.selectedForMoving.blockId){// move item from block to editor
-                calculatePositionAndAddItemToEditor(props.addItemToEditor, monitor.getSourceClientOffset(), component, {
-                    ...props.selectedForMoving
+                props.moveField({
+                    editorId: props.id,
+                    coords: getCoords(component, monitor.getSourceClientOffset())
                 })
-                props.deleteFieldFromBlock(props.selectedForMoving)
             }else{
                 let coords = monitor.getDifferenceFromInitialOffset()
                 props.moveItemInsideEditor(coords)
@@ -45,6 +45,14 @@ const editorTarget = {
         }
     }
 };
+
+const getCoords = (component, client) => {
+    const target = findDOMNode(component).getBoundingClientRect()
+    return{
+        x: client.x - target.x,
+        y: client.y - target.y
+    }
+}
 
 const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component, data) => {
     const type = getItemType(data.kind);
@@ -64,12 +72,15 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
             fontSize: 10,
             textAlign: 'free',
             color: '#000000',
-            fontFamily: 'Times New Roman'
+            fontFamily: 'Arial',
+            backgroundColor: '#ffffff'
         }
     }else{
         argument.newItem.value = data.value ? data.value : 'Your Text';
         argument.newItem.styles = {
-            background: '#eeeeee'
+            backgroundColor: '#eeeeee',
+            fontSize: 10,
+            color: '#000000',
         }
     }
     addItemToEditor(argument)
@@ -112,7 +123,6 @@ class TemplateEditor extends React.Component {
                                 editorId={this.props.id}
                                 key={data.id}
                                 connectDropTarget={this.props.connectDropTarget}
-                                // deleteItemFromEditor={() => { this.props.deleteItemFromEditor({ itemId: data.id, editorId: this.props.id }) }}
                                 {...data} />
                         )
                     }else if(data.type == 'field'){
@@ -141,9 +151,9 @@ const mapDispatchToProps = dispatch => {
         addItemToEditor: (data) => dispatch(addItemToEditor(data)),
         deleteItemFromEditor: (data) => dispatch(deleteItemFromEditor(data)),
         moveItemInsideEditor: data => dispatch(moveItemInsideEditor(data)),
-        deleteFieldFromBlock: data => dispatch(deleteFieldFromBlock(data)),
         pageBreak: editorId => dispatch(pageBreak(editorId)),
-        selectForEditing: () => dispatch(selectForEditing({}))
+        selectForEditing: () => dispatch(selectForEditing({})),
+        moveField: target => dispatch(moveField(target))
     }
 }
 

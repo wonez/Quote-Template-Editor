@@ -12,7 +12,7 @@ import { SIDE_MENU_SHOW_FIELDS,
         SET_COORDINATES_WHEN_DRAGGING,
         ADD_FIELD_TO_BLOCK,
         MOVE_FIELD_INSIDE_BLOCK,
-        DELETE_FIELD_FROM_BLOCK,
+        MOVE_FIELD,
         PAGE_BREAK,
         UPDATE_VALUE,
         UPDATE_STYLES
@@ -111,13 +111,6 @@ export const moveFieldInsideBlock = coords => {
     }
 }
 
-export const deleteFieldFromBlock = data => {
-    return{
-        type: DELETE_FIELD_FROM_BLOCK,
-        data
-    }
-}
-
 export const pageBreak = editorId => {
     return {
         type: PAGE_BREAK,
@@ -138,5 +131,12 @@ export const updateStyles = (identifier, value) => {
         type: UPDATE_STYLES,
         identifier,
         value
+    }
+}
+
+export const moveField = target => {
+    return{
+        type: MOVE_FIELD,
+        target
     }
 }
