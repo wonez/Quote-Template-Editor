@@ -1,0 +1,11 @@
+.Checkbox{
+    display: inline-flex;
+    align-items: center;
+    padding: .5rem;
+    .Label{
+        padding-left: .5rem;
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+}

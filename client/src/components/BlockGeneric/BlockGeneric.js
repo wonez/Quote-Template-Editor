@@ -45,13 +45,13 @@ const collectDrop = (connect, monitor) => {
 const target = {
 	drop(props, monitor, component) {
 		if (props.selectedForDragging != '') { // Adding field to block
-			props.addFieldToBlock({
+			
+			let data = {
 				editorId: props.editorId,
 				blockId: props.id,
 				newItem: {
 					kind: props.selectedForDragging,
 					id: props.selectedForDragging + Date.now(),
-					value: 'Your Text',
 					type: getItemType(props.selectedForDragging),
 					...getCoords(component, monitor.getClientOffset()),
 					styles: {
@@ -60,7 +60,20 @@ const target = {
 						color: props.styles.color
 					},
 				}
-			})
+			}
+
+			if(props.selectedForDragging == 'Date Input'){
+				data.newItem.value = '2019-01-01'
+			}else if(props.selectedForDragging == 'Initials Input'){
+				data.newItem.value = 'TEXT'
+			}else if(props.selectedForDragging == 'Checkbox Input'){
+				data.newItem.value = 'Label';
+				data.newItem.checked = false;
+			}else{
+				data.newItem.value = 'Your Text'
+			}
+			
+			props.addFieldToBlock(data)
 		} else { 
 			try{ //Move field inside block
 				if (props.children[props.selectedForMoving.id]) {
@@ -98,7 +111,7 @@ const getItemType = (text) => {
     }
     if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms Of Service'].indexOf(kind) != -1)
         return 'block'
-    if(['Checkbox', 'Date Input', 'Dropdown Field', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
+    if(['Checkbox Input', 'Date Input', 'Dropdown Field', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
         return 'field'
     return null;
 }
@@ -124,12 +137,12 @@ class BlockGeneric extends React.Component {
 	}
 
 	render() {
+		let childStyles = {};
 		let style = { 
 			top: this.props.y, 
 			left: this.props.x, 
-			...this.props.style,
 			...this.props.styles,
-			fontSize: this.props.styles.fontSize + 'px'
+			fontSize: this.props.styles.fontSize + 'px',
 		}
 		if(this.props.kind == 'Heading'){
 			style.height = '10rem';
@@ -140,16 +153,23 @@ class BlockGeneric extends React.Component {
 		if(this.props.selectedForEditing.id == this.props.id){
 			style.outline = '.3rem solid skyblue';
 		}
+		if(this.props.kind == 'Image'){
+			childStyles.backgroundImage = `url('${this.props.styles.backgroundImage}')`
+			childStyles.backgroundPosition = `${this.props.styles.backgroundPosition[0]}px ${this.props.styles.backgroundPosition[1]}px`
+			childStyles.backgroundSize = `${this.props.styles.backgroundSize[0]}px ${this.props.styles.backgroundSize[1]}px`
+			childStyles.backgroundRepeat = this.props.styles.backgroundRepeat
+		}
 		return this.props.connectDropTarget(this.props.connectDragPreview(
 			<div className={classes.BlockGeneric}
 				onClick={this.selectForEditing} 
 				style={style}>
 				<KindToDom 
+					styles={childStyles}
 					kind={this.props.kind}
 					type={this.props.type}
 					editorId={this.props.editorId}
 					id={this.props.id}
-					// selectForEditing={this.selectForEditing}
+					background={this.props.styles.backgroundImage}
 					connectDragSource={this.props.connectDragSource}
 					deleteItemFromEditor={this.deleteItemFromEditor}
 					children={this.props.children} />

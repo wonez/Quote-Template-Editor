@@ -1,7 +1,9 @@
-.TextInput{
+.InitialsInput{
     padding: .5rem;
     outline: 0;
     border: none;
+    font-weight: bold;
+    text-transform: uppercase;
     resize: none;
     &:focus{
         resize: both;

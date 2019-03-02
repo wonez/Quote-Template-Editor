@@ -263,3 +263,141 @@ export const moveField = (oldState, target) => {
     }
     return newState
 }
+
+export const handleCheck = (oldState, identifier) => {
+    const newState = {
+        ...oldState,
+        editors: {
+            ...oldState.editors,
+            [identifier.editorId]: {
+                ...oldState.editors[identifier.editorId]
+            }
+        }
+    }
+    if(identifier.blockId){//if in block
+        newState.editors[identifier.editorId][identifier.blockId] = {
+            ...oldState.editors[identifier.editorId][identifier.blockId],
+            children: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children,
+                [identifier.id]: {
+                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],                    
+                    checked: !oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].checked
+                }
+            } 
+        }
+    }else{// if not in block
+        newState.editors[identifier.editorId][identifier.id] = {
+            ...oldState.editors[identifier.editorId][identifier.id],
+            checked: !oldState.editors[identifier.editorId][identifier.id].checked
+        }
+    }
+    return newState;
+}
+
+export const updateOptions = (oldState, identifier, value) => {
+    const newState = {
+        ...oldState,
+        editors: {
+            ...oldState.editors,
+            [identifier.editorId]: {
+                ...oldState.editors[identifier.editorId]
+            }
+        }
+    }
+    if(identifier.blockId){//if in block
+        newState.editors[identifier.editorId][identifier.blockId] = {
+            ...oldState.editors[identifier.editorId][identifier.blockId],
+            children: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children,
+                [identifier.id]: {
+                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],              
+                    options: {
+                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
+                        [value.id]: value.val
+                    }   
+                }
+            } 
+        }
+    }else{// if not in block
+        newState.editors[identifier.editorId][identifier.id] = {
+            ...oldState.editors[identifier.editorId][identifier.id],
+            options: {
+                ...oldState.editors[identifier.editorId][identifier.id].options,
+                [value.id]: value.val
+            }
+        }
+    }
+    return newState;
+}
+
+export const addNewOptions = (oldState, identifier) => {
+    const newState = {
+        ...oldState,
+        editors: {
+            ...oldState.editors,
+            [identifier.editorId]: {
+                ...oldState.editors[identifier.editorId]
+            }
+        }
+    }
+    if(identifier.blockId){//if in block
+        newState.editors[identifier.editorId][identifier.blockId] = {
+            ...oldState.editors[identifier.editorId][identifier.blockId],
+            children: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children,
+                [identifier.id]: {
+                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],              
+                    options: {
+                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
+                    }   
+                }
+            } 
+        }
+        newState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options[`Option ${Date.now()}`] = 'New Option'
+    }else{// if not in block
+        newState.editors[identifier.editorId][identifier.id] = {
+            ...oldState.editors[identifier.editorId][identifier.id],
+            options: {
+                ...oldState.editors[identifier.editorId][identifier.id].options,
+            }
+        }
+        newState.editors[identifier.editorId][identifier.id].options[`Option ${Date.now()}`] = 'New Option'
+    }
+    return newState;
+}
+
+export const deleteOptions = (oldState, identifier, id) => {
+    const newState = {
+        ...oldState,
+        editors: {
+            ...oldState.editors,
+            [identifier.editorId]: {
+                ...oldState.editors[identifier.editorId]
+            }
+        }
+    }
+    if(identifier.blockId){//if in block
+        newState.editors[identifier.editorId][identifier.blockId] = {
+            ...oldState.editors[identifier.editorId][identifier.blockId],
+            children: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children,
+                [identifier.id]: {
+                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],
+                    options: {
+                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
+                    }
+                }
+            } 
+        }
+        delete newState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options[id]
+    }else{// if not in block
+        newState.editors[identifier.editorId][identifier.id] = {
+            ...oldState.editors[identifier.editorId][identifier.id],
+            options: {
+                ...oldState.editors[identifier.editorId][identifier.id].options,
+            }
+        }
+        delete newState.editors[identifier.editorId][identifier.id].options[id]
+    }
+    return newState;
+}

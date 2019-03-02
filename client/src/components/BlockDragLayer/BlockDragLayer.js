@@ -43,7 +43,7 @@ class BlockDragLayer extends React.Component {
     }
 
     render(){
-
+        
         if(!this.props.isDragging){
             return null
         }

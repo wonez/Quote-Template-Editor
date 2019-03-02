@@ -8,7 +8,7 @@ import classes from './FieldGeneric.scss'
 import { ItemTypes } from '../../dnd/types'
 import { DragSource } from 'react-dnd'
 
-import { selectForMoving, unselectFromMoving, updateValue, selectForEditing } from '../../store'
+import { selectForMoving, unselectFromMoving, updateValue, selectForEditing, handleCheck } from '../../store'
 
 const source = {
     beginDrag(props, monitor, component) {
@@ -35,6 +35,14 @@ class FieldGeneric extends React.Component{
             editorId: this.props.editorId,
             blockId: this.props.blockId
         }, e.target.value);
+    }
+
+    checkHandler = () => {
+        this.props.handleCheck({
+            id: this.props.id,
+            editorId: this.props.editorId,
+            blockId: this.props.blockId
+        });
     }
 
     selectForEditing = (e) => {
@@ -74,13 +82,15 @@ class FieldGeneric extends React.Component{
                 className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
                 style={style}>
                 <KindToDom 
-                    blockStyles={this.props.blockStyles}
                     focused={this.props.selectedForEditing.id == this.props.id}
+                    options={this.props.options}
                     kind={this.props.kind}
                     type={this.props.type}
                     editorId={this.props.editorId}
                     blockId={this.props.blockId}
                     id={this.props.id}
+                    checked={this.props.checked}
+                    checkHandler={this.checkHandler}
                     value={this.props.value}
                     changeHandler={this.changeHandler}
                     connectDragSource={this.props.connectDragSource}
@@ -105,6 +115,7 @@ const mapDispatchToProps = (dispatch) => {
         selectForEditing: data => dispatch(selectForEditing(data)),
         unselectFromMoving: () => dispatch(unselectFromMoving()),
         updateValue: (identifier, value) => dispatch(updateValue(identifier, value)),
+        handleCheck: identifier => dispatch(handleCheck(identifier))
     }
 }
 

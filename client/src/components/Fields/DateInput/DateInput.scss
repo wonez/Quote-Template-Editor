@@ -1,0 +1,9 @@
+.DateInput{
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    &::-webkit-clear-button,
+    &::-webkit-inner-spin-button{
+        display: none;
+    }
+}

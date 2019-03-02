@@ -1,0 +1,12 @@
+.DropdownEditor{
+    display: grid;
+    grid-row-gap: 1rem;
+    .Delete{
+        color: crimson;
+        background: none;
+        border: none;
+        outline: none;
+        border: 1px solid;
+        padding: .5rem 0;
+    }
+}

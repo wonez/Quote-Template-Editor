@@ -58,7 +58,6 @@ const mapDispatchToProps = (dispatch, props) => {
     return {
         updateStyles: (identifier, value) => dispatch(updateStyles(identifier, value)),
         delete: () => dispatch(deleteItemFromEditor(props.selectedForEditing)),
-        selectForEditing: () => dispatch(selectedForEditing({}))
     }
 }
 

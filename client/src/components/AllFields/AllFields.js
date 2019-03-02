@@ -10,7 +10,7 @@ const AllFields = (props) => {
             <FieldSelector kind="Initials Input" />
             <FieldSelector kind="Signature Input" />
             <FieldSelector kind="Checkbox Input" />
-            <FieldSelector kind="Dprodown Input" />
+            <FieldSelector kind="Dropdown Input" />
         </div>
     )
 }

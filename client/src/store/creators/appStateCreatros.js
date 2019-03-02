@@ -15,7 +15,11 @@ import { SIDE_MENU_SHOW_FIELDS,
         MOVE_FIELD,
         PAGE_BREAK,
         UPDATE_VALUE,
-        UPDATE_STYLES
+        UPDATE_STYLES,
+        HANDLE_CHECK,
+        UPDATE_OPTIONS,
+        ADD_NEW_OPTIONS,
+        DELETE_OPTIONS
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -138,5 +142,35 @@ export const moveField = target => {
     return{
         type: MOVE_FIELD,
         target
+    }
+}
+
+export const handleCheck = target => {
+    return {
+        type: HANDLE_CHECK,
+        target
+    }
+}
+
+export const updateOptions = (identifier, value) => {
+    return {
+        type: UPDATE_OPTIONS,
+        identifier,
+        value
+    }
+}
+
+export const addNewOptions = (identifier) => {
+    return {
+        type: ADD_NEW_OPTIONS,
+        identifier
+    }
+}
+
+export const deleteOptions = (identifier, id) => {
+    return {
+        type: DELETE_OPTIONS,
+        identifier,
+        id
     }
 }

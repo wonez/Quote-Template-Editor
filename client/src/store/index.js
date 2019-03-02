@@ -20,5 +20,9 @@ export {
     moveField,
     pageBreak,
     updateValue,
-    updateStyles
+    updateStyles,
+    handleCheck,
+    updateOptions,
+    addNewOptions,
+    deleteOptions,
 } from './creators/appStateCreatros'

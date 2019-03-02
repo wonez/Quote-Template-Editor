@@ -73,15 +73,44 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
             textAlign: 'free',
             color: '#000000',
             fontFamily: 'Arial',
-            backgroundColor: '#ffffff'
+        }
+        if(data.kind == 'Image'){
+            argument.newItem.styles.backgroundImage  = '',
+            argument.newItem.styles.backgroundRepeat = 'no-repeat';
+            argument.newItem.styles.backgroundPosition = [0, 0];
+            argument.newItem.styles.backgroundSize = [100, 100]
+        }else{
+            argument.newItem.styles.backgroundColor = '#ffffff'
         }
     }else{
-        argument.newItem.value = data.value ? data.value : 'Your Text';
         argument.newItem.styles = {
             backgroundColor: '#eeeeee',
             fontSize: 10,
             color: '#000000',
         }
+        if(data.kind == 'Date Input'){
+            argument.newItem.value = '2019-01-01'
+        }else if(data.kind == 'Initials Input'){
+            argument.newItem.value = 'TEXT'
+        }else if(data.kind == 'Checkbox Input'){
+            argument.newItem.value = 'Label';
+            argument.newItem.checked = false;
+        }else if(data.kind == 'Dropdown Input'){
+            argument.newItem.options = {
+                'Option 1': 'Option 1', 
+                'Option 2': 'Option 2', 
+                'Option 3': 'Option 3'
+            }
+            argument.newItem.value = 'Option 1';
+        }else{
+            argument.newItem.value = 'Your Text'
+        }
+    }
+    if(data.kind == 'Cover Page'){
+        console.log('aaa');
+        // argument.newItem.chilren = {
+            
+        // }
     }
     addItemToEditor(argument)
 }
@@ -98,7 +127,7 @@ const getItemType = (text) => {
     }
     if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms Of Service'].indexOf(kind) != -1)
         return 'block'
-    if(['Checkbox', 'Date Input', 'Dropdown Field', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
+    if(['Checkbox Input', 'Date Input', 'Dropdown Input', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
         return 'field'
     return null;
 }

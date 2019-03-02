@@ -14,7 +14,11 @@ import { SIDE_MENU_SHOW_BLOCKS,
         MOVE_FIELD,
         PAGE_BREAK,
         UPDATE_VALUE,
-        UPDATE_STYLES
+        UPDATE_STYLES,
+        HANDLE_CHECK,
+        UPDATE_OPTIONS,
+        ADD_NEW_OPTIONS,
+        DELETE_OPTIONS,
     } from '../types/appStateTypes'
 
 import { changeSingleField, 
@@ -26,7 +30,11 @@ import { changeSingleField,
         pageBreak,
         updateValue,
         updateStyles,
-        moveField
+        moveField,
+        handleCheck,
+        updateOptions,
+        addNewOptions,
+        deleteOptions
     } from './reducerFunctions'
 
 const initialState = {
@@ -75,7 +83,14 @@ const reducer = (state = initialState, action) => {
             return updateStyles(state, action.identifier, action.value)
         case MOVE_FIELD:
             return moveField(state, action.target)
-
+        case HANDLE_CHECK:
+            return handleCheck(state, action.target)
+        case UPDATE_OPTIONS: 
+            return updateOptions(state, action.identifier, action.value)
+        case ADD_NEW_OPTIONS:
+            return addNewOptions(state, action.identifier)
+        case DELETE_OPTIONS:
+            return deleteOptions(state, action.identifier, action.id)
 
 
         default: 
