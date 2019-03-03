@@ -23,6 +23,7 @@ const source = {
 const collect = (connect, monitor) => {
     return {
         connectDragSource: connect.dragSource(),
+        connectDragPreview: connect.dragPreview(),
         isDragging: monitor.isDragging()
     }
 }
@@ -35,6 +36,14 @@ class FieldGeneric extends React.Component{
             editorId: this.props.editorId,
             blockId: this.props.blockId
         }, e.target.value);
+    }
+
+    canvasHandler = data => {
+        this.props.updateValue({
+            id: this.props.id,
+            editorId: this.props.editorId,
+            blockId: this.props.blockId
+        }, data)
     }
 
     checkHandler = () => {
@@ -76,28 +85,54 @@ class FieldGeneric extends React.Component{
             style.fontSize = style.fontSize+'px';
         }
 
-        return this.props.connectDragSource(
-            <div key={this.props.id} 
-                onClick={this.selectForEditing}
-                className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
-                style={style}>
-                <KindToDom 
-                    focused={this.props.selectedForEditing.id == this.props.id}
-                    options={this.props.options}
-                    kind={this.props.kind}
-                    type={this.props.type}
-                    editorId={this.props.editorId}
-                    blockId={this.props.blockId}
-                    id={this.props.id}
-                    checked={this.props.checked}
-                    checkHandler={this.checkHandler}
-                    value={this.props.value}
-                    changeHandler={this.changeHandler}
-                    connectDragSource={this.props.connectDragSource}
-                    deleteItemFromEditor={this.props.deleteItemFromEditor}
-                    children={this.props.children} />
-            </div>
-        )
+        if(this.props.kind == 'Signature Input' || this.props.kind == 'Dropdown Input'){
+            return this.props.connectDragPreview(
+                <div key={this.props.id} 
+                    onClick={this.selectForEditing}
+                    className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
+                    style={style}>
+                    <KindToDom 
+                        canvasHandler={this.canvasHandler}
+                        focused={this.props.selectedForEditing.id == this.props.id}
+                        options={this.props.options}
+                        kind={this.props.kind}
+                        type={this.props.type}
+                        editorId={this.props.editorId}
+                        blockId={this.props.blockId}
+                        id={this.props.id}
+                        checked={this.props.checked}
+                        checkHandler={this.checkHandler}
+                        value={this.props.value}
+                        changeHandler={this.changeHandler}
+                        connectDragSource={this.props.connectDragSource}
+                        deleteItemFromEditor={this.props.deleteItemFromEditor}
+                        children={this.props.children} />
+                </div>
+            )
+        }else{
+            return this.props.connectDragSource(
+                <div key={this.props.id} 
+                    onClick={this.selectForEditing}
+                    className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
+                    style={style}>
+                    <KindToDom 
+                        focused={this.props.selectedForEditing.id == this.props.id}
+                        options={this.props.options}
+                        kind={this.props.kind}
+                        type={this.props.type}
+                        editorId={this.props.editorId}
+                        blockId={this.props.blockId}
+                        id={this.props.id}
+                        checked={this.props.checked}
+                        checkHandler={this.checkHandler}
+                        value={this.props.value}
+                        changeHandler={this.changeHandler}
+                        connectDragSource={this.props.connectDragSource}
+                        deleteItemFromEditor={this.props.deleteItemFromEditor}
+                        children={this.props.children} />
+                </div>
+            )
+        }
     }
 }
 

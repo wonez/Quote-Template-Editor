@@ -69,6 +69,15 @@ const target = {
 			}else if(props.selectedForDragging == 'Checkbox Input'){
 				data.newItem.value = 'Label';
 				data.newItem.checked = false;
+			}else if(props.selectedForDragging == 'Dropdown Input'){
+				data.newItem.options = {
+					'Option 1': 'Option 1', 
+					'Option 2': 'Option 2', 
+					'Option 3': 'Option 3'
+				}
+			}else if(props.selectedForDragging == 'Signature Input'){
+				data.newItem.styles.lineWidth = 5;
+				data.newItem.value = ''
 			}else{
 				data.newItem.value = 'Your Text'
 			}

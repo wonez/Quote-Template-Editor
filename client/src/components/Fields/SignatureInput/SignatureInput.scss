@@ -1,0 +1,13 @@
+.Container{
+    display: inline-block;
+    .SignatureInput{
+        width: 20rem;
+        height: 10rem;
+    }
+    .Holder{
+        font-size: 1rem;
+        color: crimson;
+        background: whitesmoke;
+        border-bottom: 1px solid #eee;
+    }
+}

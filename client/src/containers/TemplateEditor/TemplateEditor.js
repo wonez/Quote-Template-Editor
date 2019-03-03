@@ -82,7 +82,7 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
         }else{
             argument.newItem.styles.backgroundColor = '#ffffff'
         }
-    }else{
+    }else{//if field
         argument.newItem.styles = {
             backgroundColor: '#eeeeee',
             fontSize: 10,
@@ -102,6 +102,9 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
                 'Option 3': 'Option 3'
             }
             argument.newItem.value = 'Option 1';
+        }else if(data.kind == 'Signature Input'){
+            argument.newItem.styles.lineWidth = 5;
+            argument.newItem.value = ''
         }else{
             argument.newItem.value = 'Your Text'
         }
