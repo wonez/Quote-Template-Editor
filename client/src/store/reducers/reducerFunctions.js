@@ -1,116 +1,75 @@
+const updateItemInEditor = (state, editorId, id, updateData) => ({
+    ...state,
+    editors: {
+        ...state.editors,
+        [editorId]: {
+            ...state.editors[editorId],
+            [id]: {
+                ...state.editors[editorId][id],
+                ...updateData
+            }
+        }
+    }
+})
+
+const updateChildInBlock = (state, editorId, blockId, id, updateData) => ({
+    ...state,
+    editors: {
+        ...state.editors,
+        [editorId]: {
+            ...state.editors[editorId],
+            [blockId]: {
+                ...state.editors[editorId][blockId],
+                children: {
+                    ...state.editors[editorId][blockId].children,
+                    [id]: {
+                        ...state.editors[editorId][blockId].children[id],
+                        ...updateData
+                    }
+                }
+            }
+        }
+    }
+})
+
 export const changeSingleField = (oldState, fieldName, newValue) => ({
     ...oldState,
     [fieldName]: newValue
 })
 
-export const addItemToEditor = (oldState, data) => ({
-    ...oldState,
-    editors:{
-        ...oldState.editors,
-        [data.editorId]: {
-            ...oldState.editors[data.editorId],
-            [data.newItem.id]: {
-                ...data.newItem
-            }
-        }
-    }
-})
+export const addItemToEditor = (oldState, data) => {
+    return updateItemInEditor(oldState, data.editorId, data.newItem.id, data.newItem)
+}
 
 export const moveItemInsideEditor = (oldState, coords) => {
-    let newCoords = {
-        newX: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.id].x + coords.x,
-        newY: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.id].y + coords.y,
-    }
-    return {
-        ...oldState,
-        editors:{
-            ...oldState.editors,
-            [oldState.selectedForMoving.editorId]: {
-                ...oldState.editors[oldState.selectedForMoving.editorId],
-                [oldState.selectedForMoving.id]: {
-                    ...oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.id],
-                    x: newCoords.newX,
-                    y: newCoords.newY
-                }
-            }
-        }
-    }
+    return updateItemInEditor(oldState, oldState.selectedForMoving.editorId, oldState.selectedForMoving.id, {
+        x: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.id].x + coords.x,
+        y: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.id].y + coords.y,
+    })
 }
 
 export const addFieldToBlock = (oldState, data) => {
-    return{
-        ...oldState,
-        editors:{
-            ...oldState.editors,
-            [data.editorId]: {
-                ...oldState.editors[data.editorId],
-                [data.blockId]:{
-                    ...oldState.editors[data.editorId][data.blockId],
-                    children: {
-                        ...oldState.editors[data.editorId][data.blockId].children,
-                        [data.newItem.id]: {
-                            ...data.newItem
-                        }
-                    }
-                }   
-            }
-        }
-    }
+    return updateChildInBlock(oldState, data.editorId, data.blockId, data.newItem.id, data.newItem)
 }
 
 export const moveFieldInsideBlock = (oldState, coords) => {
-    let newCoords = {
-        newX: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId].children[oldState.selectedForMoving.id].x + coords.x,
-        newY: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId].children[oldState.selectedForMoving.id].y + coords.y,
-    }
-    return {
-        ...oldState,
-        editors:{
-            ...oldState.editors,
-            [oldState.selectedForMoving.editorId]: {
-                ...oldState.editors[oldState.selectedForMoving.editorId],
-                [oldState.selectedForMoving.blockId]: {
-                    ...oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId],
-                    children: {
-                        ...oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId].children,
-                        [oldState.selectedForMoving.id]:{
-                            ...oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId].children[oldState.selectedForMoving.id],
-                            x: newCoords.newX,
-                            y: newCoords.newY
-                        }
-                    }
-                }
-            }
-        }
-    }
+    return updateChildInBlock(oldState, oldState.selectedForMoving.editorId, oldState.selectedForMoving.blockId, oldState.selectedForMoving.id, {
+        x: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId].children[oldState.selectedForMoving.id].x + coords.x,
+        y: oldState.editors[oldState.selectedForMoving.editorId][oldState.selectedForMoving.blockId].children[oldState.selectedForMoving.id].y + coords.y,
+    })
 }
 
 export const deleteItemFromEditor = (oldState, data) => {
-    let newState = {
-        ...oldState,
-        selectedForEditing: {},
-        editors:{
-            ...oldState.editors,
-            [data.editorId]: {
-                ...oldState.editors[data.editorId],
-            }
-        }
-    }
-    if(oldState.selectedForEditing.id == data.id){
-        newState.selectedForEditing = {}
-    }
+    let newState = null;
     if(data.blockId){
-        newState.editors[data.editorId][data.blockId] = {
-            ...oldState.editors[data.editorId][data.blockId],
-            children: {
-                ...oldState.editors[data.editorId][data.blockId].children,
-            }
-        }
+        newState = updateChildInBlock(oldState, data.editorId, data.blockId, data.id)
         delete newState.editors[data.editorId][data.blockId].children[data.id]
     }else{
+        newState = updateItemInEditor(oldState, data.editorId, data.id)
         delete newState.editors[data.editorId][data.id]
     }
-    return newState
+    newState.selectedForEditing = {};
+    return newState;
 }
 
 export const pageBreak = (oldState, editorId) => {
@@ -121,78 +80,34 @@ export const pageBreak = (oldState, editorId) => {
             editors[`Editor${Date.now()}`] = {}
         }
     }
-    return{
-        ...oldState,
-        editors
-    }
+    return changeSingleField(oldState, 'editors', editors)
 } 
 
 export const updateValue = (oldState, identifier, value) => {
-    const newState = {
-        ...oldState,
-        editors: {
-            ...oldState.editors,
-            [identifier.editorId]: {
-                ...oldState.editors[identifier.editorId]
-            }
-        }
-    }
-    if(identifier.blockId){//if in block
-        newState.editors[identifier.editorId][identifier.blockId] = {
-            ...oldState.editors[identifier.editorId][identifier.blockId],
-            children: {
-                ...oldState.editors[identifier.editorId][identifier.blockId].children,
-                [identifier.id]: {
-                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],                    
-                    value
-                }
-            } 
-        }
-    }else{// if not in block
-        newState.editors[identifier.editorId][identifier.id] = {
-            ...oldState.editors[identifier.editorId][identifier.id],
-            value
-        }
-    }
-    return newState;
+    if(identifier.blockId)
+        return updateChildInBlock(oldState, identifier.editorId, identifier.blockId, identifier.id, { value })
+    else
+        return updateItemInEditor(oldState, identifier.editorId, identifier.id, { value })
 } 
 
 
 export const updateStyles = (oldState, identifier, value) => {
-    const newState = {
-        ...oldState,
-        editors:{
-            ...oldState.editors,
-            [identifier.editorId]: {
-                ...oldState.editors[identifier.editorId],
-            }
-        }
-    }
     if(identifier.blockId){
-        newState.editors[identifier.editorId][identifier.blockId] = {
-            ...oldState.editors[identifier.editorId][identifier.blockId],
-            children: {
-                ...oldState.editors[identifier.editorId][identifier.blockId].children,
-                [identifier.id]: {
-                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],
-                    styles:{
-                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].styles,                        
-                        [value.key]: value.val
-                    }
-                }
+        return updateChildInBlock(oldState, identifier.editorId, identifier.blockId, identifier.id, {
+            styles: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].styles,                        
+                [value.key]: value.val
             }
-        }
+        })
     }else{
-        newState.editors[identifier.editorId][identifier.id] = {
-            ...oldState.editors[identifier.editorId][identifier.id],
+        let updateData = {
             styles:{
                 ...oldState.editors[identifier.editorId][identifier.id].styles,
                 [value.key]: value.val
             }
         }
-        // apply changes to children
         if(value.key == 'fontSize' || value.key == 'color'){
-            const children = {}
+            let children = {}
             for(let child in oldState.editors[identifier.editorId][identifier.id].children){
                 children[child] = {
                     ...oldState.editors[identifier.editorId][identifier.id].children[child],
@@ -202,201 +117,107 @@ export const updateStyles = (oldState, identifier, value) => {
                     }
                 }
             }
-            newState.editors[identifier.editorId][identifier.id].children = children; 
-        } 
+            updateData.children = children;
+        }
+        return updateItemInEditor(oldState, identifier.editorId, identifier.id, updateData)
     }
-    return newState
 }
 
 export const moveField = (oldState, target) => {
     const source = oldState.selectedForMoving;
     const sourceData = source.blockId ? oldState.editors[source.editorId][source.blockId].children[source.id] : oldState.editors[source.editorId][source.id]
-    const newState = {
-        ...oldState,
-        selectedForEditing: {},
-        editors: { ...oldState.editors }
-    }
-    if(target.blockId){ 
-        newState.editors[target.editorId] = {
-            ...oldState.editors[target.editorId],
-            [target.blockId]: {
-                ...oldState.editors[target.editorId][target.blockId],
-                children: {
-                    ...oldState.editors[target.editorId][target.blockId].children,
-                    [source.id]: {
-                        ...sourceData,
-                        ...target.coords,
-                        styles: {
-                            ...sourceData.styles,
-                            fontSize: oldState.editors[target.editorId][target.blockId].styles.fontSize,
-                            color: oldState.editors[target.editorId][target.blockId].styles.color
-                        }
-                    }
-                }
+    let newState = null;
+    //append field to target
+    if(target.blockId){
+        newState = updateChildInBlock(oldState, target.editorId, target.blockId, source.id, {
+            ...sourceData,
+            ...target.coords,
+            styles: {
+                ...sourceData.styles,
+                fontSize: oldState.editors[target.editorId][target.blockId].styles.fontSize,
+                color: oldState.editors[target.editorId][target.blockId].styles.color
             }
-        }
+        })
     }else{
-        newState.editors[target.editorId] = {
-            ...oldState.editors[target.editorId],
-            [source.id]: {
-                ...sourceData,
-                ...target.coords,
-            }
-        }
+        newState = updateItemInEditor(oldState, target.editorId, source.id, {
+            ...sourceData,
+            ...target.coords
+        })
     }
+    //remove field from source
     if(source.blockId){
-        newState.editors[source.editorId] = {
-            ...newState.editors[source.editorId],
-            [source.blockId]: {
-                ...newState.editors[source.editorId][source.blockId],
-                children: {
-                    ...newState.editors[source.editorId][source.blockId].children,
-                }
-            }
-        }
+        newState = updateChildInBlock(newState, source.editorId, source.blockId, source.id)
         delete newState.editors[source.editorId][source.blockId].children[source.id]
     }else{
-        newState.editors[source.editorId] = {
-            ...newState.editors[source.editorId],
-        }
+        newState = updateItemInEditor(newState, source.editorId, source.id)
         delete newState.editors[source.editorId][source.id]
     }
-    return newState
+    return changeSingleField(newState, 'selectedForEditing', {})
 }
 
 export const handleCheck = (oldState, identifier) => {
-    const newState = {
-        ...oldState,
-        editors: {
-            ...oldState.editors,
-            [identifier.editorId]: {
-                ...oldState.editors[identifier.editorId]
-            }
-        }
+    if(identifier.blockId){
+        return updateChildInBlock(oldState, identifier.editorId, identifier.blockId, identifier.id, {
+            checked: !oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].checked        
+        })
     }
-    if(identifier.blockId){//if in block
-        newState.editors[identifier.editorId][identifier.blockId] = {
-            ...oldState.editors[identifier.editorId][identifier.blockId],
-            children: {
-                ...oldState.editors[identifier.editorId][identifier.blockId].children,
-                [identifier.id]: {
-                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],                    
-                    checked: !oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].checked
-                }
-            } 
-        }
-    }else{// if not in block
-        newState.editors[identifier.editorId][identifier.id] = {
-            ...oldState.editors[identifier.editorId][identifier.id],
-            checked: !oldState.editors[identifier.editorId][identifier.id].checked
-        }
-    }
-    return newState;
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
+        checked: !oldState.editors[identifier.editorId][identifier.id].checked
+    })
 }
 
 export const updateOptions = (oldState, identifier, value) => {
-    const newState = {
-        ...oldState,
-        editors: {
-            ...oldState.editors,
-            [identifier.editorId]: {
-                ...oldState.editors[identifier.editorId]
+    if(identifier.blockId){
+        return updateChildInBlock(oldState, identifier.editorId, identifier.blockId, identifier.id, {
+            options: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
+                [value.id]: value.val
             }
-        }
-    }
-    if(identifier.blockId){//if in block
-        newState.editors[identifier.editorId][identifier.blockId] = {
-            ...oldState.editors[identifier.editorId][identifier.blockId],
-            children: {
-                ...oldState.editors[identifier.editorId][identifier.blockId].children,
-                [identifier.id]: {
-                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],              
-                    options: {
-                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
-                        [value.id]: value.val
-                    }   
-                }
-            } 
-        }
-    }else{// if not in block
-        newState.editors[identifier.editorId][identifier.id] = {
-            ...oldState.editors[identifier.editorId][identifier.id],
+        })
+    } else {
+        return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
             options: {
                 ...oldState.editors[identifier.editorId][identifier.id].options,
                 [value.id]: value.val
             }
-        }
+        })
     }
-    return newState;
 }
 
 export const addNewOptions = (oldState, identifier) => {
-    const newState = {
-        ...oldState,
-        editors: {
-            ...oldState.editors,
-            [identifier.editorId]: {
-                ...oldState.editors[identifier.editorId]
-            }
-        }
-    }
-    if(identifier.blockId){//if in block
-        newState.editors[identifier.editorId][identifier.blockId] = {
-            ...oldState.editors[identifier.editorId][identifier.blockId],
-            children: {
-                ...oldState.editors[identifier.editorId][identifier.blockId].children,
-                [identifier.id]: {
-                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],              
-                    options: {
-                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
-                    }   
-                }
-            } 
-        }
-        newState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options[`Option ${Date.now()}`] = 'New Option'
-    }else{// if not in block
-        newState.editors[identifier.editorId][identifier.id] = {
-            ...oldState.editors[identifier.editorId][identifier.id],
+    let newOption = {}
+    newOption[`Option ${Date.now()}`] = 'New Option'
+    if(identifier.blockId){
+        return updateChildInBlock(oldState, identifier.editorId, identifier.blockId, identifier.id, {
             options: {
-                ...oldState.editors[identifier.editorId][identifier.id].options,
-            }
-        }
-        newState.editors[identifier.editorId][identifier.id].options[`Option ${Date.now()}`] = 'New Option'
+                ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
+                ...newOption
+            } 
+        })
     }
-    return newState;
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
+        options: {
+            ...oldState.editors[identifier.editorId][identifier.id].options,
+            ...newOption
+        }
+    })
 }
 
 export const deleteOptions = (oldState, identifier, id) => {
-    const newState = {
-        ...oldState,
-        editors: {
-            ...oldState.editors,
-            [identifier.editorId]: {
-                ...oldState.editors[identifier.editorId]
+    let newState = null;
+    if(identifier.blockId){
+        newState = updateChildInBlock(oldState, identifier.editorId, identifier.blockId, identifier.id, {
+            options: {
+                ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
             }
-        }
-    }
-    if(identifier.blockId){//if in block
-        newState.editors[identifier.editorId][identifier.blockId] = {
-            ...oldState.editors[identifier.editorId][identifier.blockId],
-            children: {
-                ...oldState.editors[identifier.editorId][identifier.blockId].children,
-                [identifier.id]: {
-                    ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id],
-                    options: {
-                        ...oldState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options,              
-                    }
-                }
-            } 
-        }
+        })
         delete newState.editors[identifier.editorId][identifier.blockId].children[identifier.id].options[id]
-    }else{// if not in block
-        newState.editors[identifier.editorId][identifier.id] = {
-            ...oldState.editors[identifier.editorId][identifier.id],
+    }else{
+        newState = updateItemInEditor(oldState, identifier.editorId, identifier.id, {
             options: {
                 ...oldState.editors[identifier.editorId][identifier.id].options,
             }
-        }
+        })
         delete newState.editors[identifier.editorId][identifier.id].options[id]
     }
     return newState;

@@ -8,7 +8,7 @@ import AllFields from '../../components/AllFields/AllFields'
 import Edit from '../Edit/Edit'
 
 import classes from './EditorSidebar.scss'
-import BlockDragLayer from '../../components/BlockDragLayer/BlockDragLayer';
+import GenericDragLayer from '../../components/GenericDragLayer/GenericDragLayer';
 
 class EditorSidebar extends React.Component{
 
@@ -32,7 +32,7 @@ class EditorSidebar extends React.Component{
                 <div className={classes.Content}>
                     {content}
                 </div>
-                <BlockDragLayer />
+                <GenericDragLayer />
             </div>
         )
     }

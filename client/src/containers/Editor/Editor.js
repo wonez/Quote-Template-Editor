@@ -6,16 +6,12 @@ import TemplateEditorList from '../TemplateEditorList/TemplateEditorList';
 
 import classes from './Editor.scss'
 
-class Editor extends React.Component{
-    render(){
-        return(
-            <div className={classes.Editor}>
-                <TemplateList />
-                <TemplateEditorList />
-                <EditorSidebar />
-            </div>
-        )
-    }
-}
+const Editor = () => (
+    <div className={classes.Editor}>
+        <TemplateList />
+        <TemplateEditorList />
+        <EditorSidebar />
+    </div>
+)
 
 export default Editor;

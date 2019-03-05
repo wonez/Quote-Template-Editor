@@ -84,14 +84,8 @@ class SignatureInput extends Component {
 
 const mapStateToProps = (state, props) => {
     if(!props.id) return {}
-
-    if(props.blockId){
-        return{
-            styles: state.appState.editors[props.editorId][props.blockId].children[props.id].styles,
-        }
-    }
     return {
-        styles: state.appState.editors[props.editorId][props.id].styles,
+        styles: props.blockId ? state.appState.editors[props.editorId][props.blockId].children[props.id].styles : state.appState.editors[props.editorId][props.id].styles
     }
 }
 

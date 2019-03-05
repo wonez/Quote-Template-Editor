@@ -9,7 +9,6 @@ import { SIDE_MENU_SHOW_FIELDS,
         MOVE_ITEM_INSIDE_EDITOR,
         SELECT_FOR_MOVING,
         UNSELECT_FROM_MOVING,
-        SET_COORDINATES_WHEN_DRAGGING,
         ADD_FIELD_TO_BLOCK,
         MOVE_FIELD_INSIDE_BLOCK,
         MOVE_FIELD,
@@ -90,13 +89,6 @@ export const selectForMoving = (data) => {
 export const unselectFromMoving = (data) => {
     return {
         type: UNSELECT_FROM_MOVING,
-        data
-    }
-}
-
-export const setCoordinatesWhenDragging = data => {
-    return {
-        type: SET_COORDINATES_WHEN_DRAGGING,
         data
     }
 }

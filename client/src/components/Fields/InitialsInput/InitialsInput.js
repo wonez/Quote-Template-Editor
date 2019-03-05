@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import classes from './InitialsInput.scss'
 
-class InitialsInput extends Component {
+const InitialsInput = (props) => {
 
-    changeHandler = e => {
+    const changeHandler = e => {
         if(e.target.value.length <= 5){
-            this.props.changeHandler(e);   
+            props.changeHandler(e);   
         }
     }
 
-    render() {
-        return (
-            <textarea type="text" className={classes.InitialsInput} 
-                style={this.props.id ? null : {backgroundColor: '#eee'}}
-                value={this.props.preview ? 'TEXT' : this.props.value} 
-                onChange={this.props.preview ? () => {} : this.changeHandler} />
-        );
-    }
+    return (
+        <textarea type="text" className={classes.InitialsInput} 
+            style={props.preview ? {backgroundColor: '#eee'} : null}
+            value={props.preview ? 'TEXT' : props.value} 
+            onChange={props.preview ? () => {} : changeHandler} />
+    );
 }
 
 export default InitialsInput;

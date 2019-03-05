@@ -14,7 +14,6 @@ export {
     moveItemInsideEditor,
     selectForMoving,
     unselectFromMoving,
-    setCoordinatesWhenDragging,
     addFieldToBlock,
     moveFieldInsideBlock,
     moveField,

@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 
 import {
     addItemToEditor,
-    deleteItemFromEditor,
     moveItemInsideEditor,
     pageBreak,
     selectForEditing,
     moveField
 } from '../../store'
+
+import { getItemType, setFieldDefaults, setBlockDefaults } from '../../helpers'
 
 import classes from './TemplateEditor.scss'
 
@@ -56,15 +57,13 @@ const getCoords = (component, client) => {
 
 const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component, data) => {
     const type = getItemType(data.kind);
-    const target = findDOMNode(component).getBoundingClientRect();// x y target
-    const argument = {
+    let argument = {
         editorId: data.editorId,
         newItem: {
             type,
             kind: data.kind,
             id: data.kind + Date.now(),
-            x: source.x - target.x,
-            y: source.y - target.y,
+            ...getCoords(component, source)
         }
     }
     if(type == 'block'){
@@ -74,65 +73,16 @@ const calculatePositionAndAddItemToEditor = (addItemToEditor, source, component,
             color: '#000000',
             fontFamily: 'Arial',
         }
-        if(data.kind == 'Image'){
-            argument.newItem.styles.backgroundImage  = '',
-            argument.newItem.styles.backgroundRepeat = 'no-repeat';
-            argument.newItem.styles.backgroundPosition = [0, 0];
-            argument.newItem.styles.backgroundSize = [100, 100]
-        }else{
-            argument.newItem.styles.backgroundColor = '#ffffff'
-        }
-    }else{//if field
+        setBlockDefaults(data.kind, argument.newItem)
+    }else if(type=='field'){
         argument.newItem.styles = {
             backgroundColor: '#eeeeee',
             fontSize: 10,
             color: '#000000',
         }
-        if(data.kind == 'Date Input'){
-            argument.newItem.value = '2019-01-01'
-        }else if(data.kind == 'Initials Input'){
-            argument.newItem.value = 'TEXT'
-        }else if(data.kind == 'Checkbox Input'){
-            argument.newItem.value = 'Label';
-            argument.newItem.checked = false;
-        }else if(data.kind == 'Dropdown Input'){
-            argument.newItem.options = {
-                'Option 1': 'Option 1', 
-                'Option 2': 'Option 2', 
-                'Option 3': 'Option 3'
-            }
-            argument.newItem.value = 'Option 1';
-        }else if(data.kind == 'Signature Input'){
-            argument.newItem.styles.lineWidth = 5;
-            argument.newItem.value = ''
-        }else{
-            argument.newItem.value = 'Your Text'
-        }
-    }
-    if(data.kind == 'Cover Page'){
-        console.log('aaa');
-        // argument.newItem.chilren = {
-            
-        // }
+        setFieldDefaults(data.kind, argument.newItem)
     }
     addItemToEditor(argument)
-}
-
-const getItemType = (text) => {
-    let kind = text;
-    try {
-        Array.from(kind).forEach((chr, i) => {
-            if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].indexOf(chr) != -1)
-                throw i;
-        })
-    } catch (i) {
-        kind = kind.substring(0, i)
-    }
-    if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms Of Service'].indexOf(kind) != -1)
-        return 'block'
-    if(['Checkbox Input', 'Date Input', 'Dropdown Input', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
-        return 'field'
-    return null;
 }
 
 const collect = (connect, monitor) => {
@@ -143,8 +93,7 @@ const collect = (connect, monitor) => {
 }
 
 class TemplateEditor extends React.Component {
-
-    render() {
+    render(){    
         return this.props.connectDropTarget(
             <div className={classes.TemplateEditor} onClick={this.props.selectForEditing}>
                 {Object.keys(this.props.items).map(key => {
@@ -154,7 +103,6 @@ class TemplateEditor extends React.Component {
                             <BlockGeneric 
                                 editorId={this.props.id}
                                 key={data.id}
-                                connectDropTarget={this.props.connectDropTarget}
                                 {...data} />
                         )
                     }else if(data.type == 'field'){
@@ -181,7 +129,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addItemToEditor: (data) => dispatch(addItemToEditor(data)),
-        deleteItemFromEditor: (data) => dispatch(deleteItemFromEditor(data)),
         moveItemInsideEditor: data => dispatch(moveItemInsideEditor(data)),
         pageBreak: editorId => dispatch(pageBreak(editorId)),
         selectForEditing: () => dispatch(selectForEditing({})),

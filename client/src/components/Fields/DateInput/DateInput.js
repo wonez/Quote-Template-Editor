@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import classes from './DateInput.scss'
 
-class DateInput extends Component {
-    render() {
-        return (
-            <input type="date" 
-                className={classes.DateInput}
-                style={this.props.id ? null : {backgroundColor: '#eee'}}
-                value={this.props.preview ? '1.1.2019' : this.props.value} 
-                onChange={this.props.preview ? () => {} : this.props.changeHandler} />                    
-        );
-    }
-}
-
+const DateInput = (props) => (
+    <input type="date" 
+        className={classes.DateInput}
+        style={props.preview ? {backgroundColor: '#eee'} : null}
+        value={props.preview ? '1.1.2019' : props.value} 
+        onChange={props.preview ? () => {} : props.changeHandler} />                    
+);
 export default DateInput;

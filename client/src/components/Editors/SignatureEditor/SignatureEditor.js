@@ -4,10 +4,9 @@ import { deleteItemFromEditor, updateStyles } from '../../../store'
 
 import Color from '../../Attributes/Color/Color';
 import BackgroundColor from '../../Attributes/BackgroundColor/BackgroundColor';
-// import 
+import LineWidth from '../../Attributes/LineWidth/LineWidth';
 
 import classes from './SignatureEditor.scss'
-import LineWidth from '../../Attributes/LineWidth/LineWidth';
 
 class SignatureEditor extends Component {
 

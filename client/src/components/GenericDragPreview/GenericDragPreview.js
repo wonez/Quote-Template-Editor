@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Heading from '..//Blocks/Heading/Heading'
+import Heading from '../Blocks/Heading/Heading'
 import TextInput from '../Fields/TextInput/TextInput';
 import Paragraph from '../Blocks/Paragraph/Paragraph';
 import CoverPage from '../Blocks/CoverPage/CoverPage';
@@ -13,7 +13,7 @@ import Checkbox from '../Fields/Checkbox/Checkbox';
 import DropDownField from '../Fields/DropdownField/DropDownField';
 import SignatureInput from '../Fields/SignatureInput/SignatureInput';
 
-const BlockDragPreview = React.memo(props => {
+const GenericDragPreview = React.memo(props => {
     switch(props.type){
         //blocks
         case 'Heading': return <Heading />
@@ -32,4 +32,4 @@ const BlockDragPreview = React.memo(props => {
     }
 })
 
-export default BlockDragPreview;
+export default GenericDragPreview;

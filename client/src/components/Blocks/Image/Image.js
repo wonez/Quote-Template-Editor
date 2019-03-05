@@ -5,22 +5,19 @@ import Children from '../../Children/Children'
 
 import classes from './Image.scss'
 
-class Image extends React.Component{
-    render(){
-        let toolbar = (
-            <div>
-                <Toolbar selectForEditing={this.props.selectForEditing} 
-                        title={"Image Block"}
-                        deleteItemFromEditor={this.props.deleteItemFromEditor} /> 
-            </div>
-        )
-        return (
-            <div className={classes.Image} >
-                {this.props.connectDragSource ? this.props.connectDragSource(toolbar) : toolbar}
-                <Children styles={this.props.styles} children={this.props.children} blockId={this.props.id} editorId={this.props.editorId} />
-            </div>
-        )
-    }  
+const Image = (props) => {
+    let toolbar = (
+        <div>
+            <Toolbar title={"Image Block"}
+                        deleteItemFromEditor={props.deleteItemFromEditor} /> 
+        </div>
+    )
+    return (
+        <div className={classes.Image} >
+            {props.connectDragSource ? props.connectDragSource(toolbar) : toolbar}
+            <Children styles={props.styles} children={props.children} blockId={props.id} editorId={props.editorId} />
+        </div>
+    )
 }
 
 export default Image;

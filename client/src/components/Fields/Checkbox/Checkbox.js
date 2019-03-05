@@ -1,21 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import classes from './Checkbox.scss'
 
-class Checkbox extends Component {
+const Checkbox = (props) => (
+    <div className={classes.Checkbox} style={props.preview ? {backgroundColor: '#eee'} : null}>
+        <input className={classes.Check} checked={props.checked} onChange={props.checkHandler} type="checkbox" /> 
+        <input type="text" 
+            className={classes.Label} 
+            value={props.preview ? 'Label' : props.value} 
+            onChange={props.preview ? ()=>{} : props.changeHandler}
+            /> 
+    </div>
+);
 
-    render() {
-        return (
-            <div className={classes.Checkbox} style={this.props.id ? null : {backgroundColor: '#eee'}}>
-                <input className={classes.Check} checked={this.props.checked} onChange={this.props.checkHandler} type="checkbox" /> 
-                <input type="text" 
-                    className={classes.Label} 
-                    value={this.props.preview ? 'Label' : this.props.value} 
-                    onChange={this.props.preview ? ()=>{} : this.props.changeHandler}
-                    /> 
-            </div>
-        );
-    }
-}
 
 export default Checkbox;

@@ -2,14 +2,11 @@ import React from 'react'
 
 import { connect } from 'react-redux'
 
-import classes from './BlockDragLayer.scss'
+import classes from './GenericDragLayer.scss'
 
-import BlockDragPreview from '../BlockDragPreview/BlockDragPreview'
-
-import { setCoordinatesWhenDragging } from '../../store'
+import GenericDragPreview from '../GenericDragPreview/GenericDragPreview'
 
 import { DragLayer } from 'react-dnd';
-import KindToDom from '../KindToDom/KindToDom'
 
 
 const collect = (monitor, props) => {
@@ -26,7 +23,7 @@ const collect = (monitor, props) => {
     }
 }
 
-class BlockDragLayer extends React.Component {
+class GenericDragLayer extends React.Component {
 
     getItemStyles = () => {
         const { currentOffset } = this.props;
@@ -58,8 +55,8 @@ class BlockDragLayer extends React.Component {
         }
 
         return (
-            <div className={classes.BlockDragLayer} style={style}>
-                <BlockDragPreview type={this.props.selectedForDragging}/>
+            <div className={classes.GenericDragLayer} style={style}>
+                <GenericDragPreview type={this.props.selectedForDragging}/>
             </div>
         );
     }
@@ -71,10 +68,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return{
-        setCoordinatesWhenDragging: (data) => dispatch(setCoordinatesWhenDragging(data))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DragLayer(collect)(BlockDragLayer));
+export default connect(mapStateToProps)(DragLayer(collect)(GenericDragLayer));

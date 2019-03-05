@@ -10,12 +10,19 @@ import { selectForMoving,
 		selectForEditing,
 		moveField } from '../../store'
 
-import KindToDom from '../KindToDom/KindToDom'
+import { getItemType, setFieldDefaults } from '../../helpers'
 
 import { ItemTypes } from '../../dnd/types'
 import { DragSource, DropTarget } from 'react-dnd'
 
 import classes from './BlockGeneric.scss'
+
+import Heading from '../Blocks/Heading/Heading';
+import CoverPage from '../Blocks/CoverPage/CoverPage';
+import Paragraph from '../Blocks/Paragraph/Paragraph';
+import TermsOfService from '../Blocks/TermsOfService/TermsOfService';
+import Image from '../Blocks/Image/Image'
+
 
 const source = {
 	beginDrag(props, monitor, component) {
@@ -61,28 +68,9 @@ const target = {
 					},
 				}
 			}
-
-			if(props.selectedForDragging == 'Date Input'){
-				data.newItem.value = '2019-01-01'
-			}else if(props.selectedForDragging == 'Initials Input'){
-				data.newItem.value = 'TEXT'
-			}else if(props.selectedForDragging == 'Checkbox Input'){
-				data.newItem.value = 'Label';
-				data.newItem.checked = false;
-			}else if(props.selectedForDragging == 'Dropdown Input'){
-				data.newItem.options = {
-					'Option 1': 'Option 1', 
-					'Option 2': 'Option 2', 
-					'Option 3': 'Option 3'
-				}
-			}else if(props.selectedForDragging == 'Signature Input'){
-				data.newItem.styles.lineWidth = 5;
-				data.newItem.value = ''
-			}else{
-				data.newItem.value = 'Your Text'
-			}
-			
+			setFieldDefaults(props.selectedForDragging, data.newItem)
 			props.addFieldToBlock(data)
+
 		} else { 
 			try{ //Move field inside block
 				if (props.children[props.selectedForMoving.id]) {
@@ -108,23 +96,6 @@ const getCoords = (component, client) => {
 	return { x,y }
 }
 
-const getItemType = (text) => {
-    let kind = text;
-    try {
-        Array.from(kind).forEach((chr, i) => {
-            if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].indexOf(chr) != -1)
-                throw i;
-        })
-    } catch (i) {
-        kind = kind.substring(0, i)
-    }
-    if (['Cover Page', 'Heading', 'Image', 'Page Break', 'Paragraph', 'Pricing Table', 'Table', 'Terms Of Service'].indexOf(kind) != -1)
-        return 'block'
-    if(['Checkbox Input', 'Date Input', 'Dropdown Field', 'Initials Input', 'Signature Input', 'Text Input'].indexOf(kind) != -1)
-        return 'field'
-    return null;
-}
-
 class BlockGeneric extends React.Component {
 
 	selectForEditing = (e) => {
@@ -145,13 +116,13 @@ class BlockGeneric extends React.Component {
 		})
 	}
 
-	render() {
-		let childStyles = {};
+	getStyles = () => {
+		let backgroundStyles = {};
 		let style = { 
-			top: this.props.y, 
-			left: this.props.x, 
 			...this.props.styles,
 			fontSize: this.props.styles.fontSize + 'px',
+			top: this.props.y, 
+			left: this.props.x, 
 		}
 		if(this.props.kind == 'Heading'){
 			style.height = '10rem';
@@ -163,25 +134,54 @@ class BlockGeneric extends React.Component {
 			style.outline = '.3rem solid skyblue';
 		}
 		if(this.props.kind == 'Image'){
-			childStyles.backgroundImage = `url('${this.props.styles.backgroundImage}')`
-			childStyles.backgroundPosition = `${this.props.styles.backgroundPosition[0]}px ${this.props.styles.backgroundPosition[1]}px`
-			childStyles.backgroundSize = `${this.props.styles.backgroundSize[0]}px ${this.props.styles.backgroundSize[1]}px`
-			childStyles.backgroundRepeat = this.props.styles.backgroundRepeat
+			backgroundStyles.backgroundImage = `url('${this.props.styles.backgroundImage}')`
+			backgroundStyles.backgroundPosition = `${this.props.styles.backgroundPosition[0]}px ${this.props.styles.backgroundPosition[1]}px`
+			backgroundStyles.backgroundSize = `${this.props.styles.backgroundSize[0]}px ${this.props.styles.backgroundSize[1]}px`
+			backgroundStyles.backgroundRepeat = this.props.styles.backgroundRepeat
 		}
+		return {backgroundStyles, style}
+	}
+
+	getItem = (backgroundStyles) => {
+		switch(this.props.kind){
+			case 'Heading': 
+				return <Heading connectDragSource={this.props.connectDragSource}
+								deleteItemFromEditor={this.deleteItemFromEditor}
+								editorId={this.props.editorId} id={this.props.id}
+								children={this.props.children}/>
+			case 'Cover Page': 
+				return <CoverPage 	connectDragSource={this.props.connectDragSource}
+									deleteItemFromEditor={this.deleteItemFromEditor}
+									editorId={this.props.editorId} id={this.props.id}
+									children={this.props.children} />
+			case 'Paragraph': 
+				return <Paragraph 	connectDragSource={this.props.connectDragSource}
+									deleteItemFromEditor={this.deleteItemFromEditor}
+									editorId={this.props.editorId} id={this.props.id}
+									children={this.props.children} />
+			case 'Terms Of Service': 
+				return <TermsOfService 	connectDragSource={this.props.connectDragSource}
+										deleteItemFromEditor={this.deleteItemFromEditor}
+										editorId={this.props.editorId} id={this.props.id}
+										children={this.props.children} />
+			case 'Image': 
+				return <Image 	styles={backgroundStyles}
+								connectDragSource={this.props.connectDragSource}
+								deleteItemFromEditor={this.deleteItemFromEditor}
+								editorId={this.props.editorId} id={this.props.id}
+								children={this.props.children} />
+		}
+	}
+
+	render() {
+		
+		const styles = this.getStyles()
+
 		return this.props.connectDropTarget(this.props.connectDragPreview(
 			<div className={classes.BlockGeneric}
 				onClick={this.selectForEditing} 
-				style={style}>
-				<KindToDom 
-					styles={childStyles}
-					kind={this.props.kind}
-					type={this.props.type}
-					editorId={this.props.editorId}
-					id={this.props.id}
-					background={this.props.styles.backgroundImage}
-					connectDragSource={this.props.connectDragSource}
-					deleteItemFromEditor={this.deleteItemFromEditor}
-					children={this.props.children} />
+				style={styles.style}>
+				{this.getItem(styles.backgroundStyles)}
 			</div>
 		))
 	}

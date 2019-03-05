@@ -1,10 +1,4 @@
 export const ItemTypes = {
-    BLOCKS: {
-        HEADING_BLOCK: 'HEADING_BLOCK',
-    },
-    FIELDS:{
-        TEXT_INPUT: 'TEXT_INPUT'
-    },
     GENERIC_BLOCK: 'GENERIC_BLOCK',
     GENERIC_FIELD: 'GENERIC_FIELD',
     BLOCK_SELECTOR: 'BLOCK_SELECTOR',
