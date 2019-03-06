@@ -222,3 +222,83 @@ export const deleteOptions = (oldState, identifier, id) => {
     }
     return newState;
 }
+
+export const updateCell = (oldState, identifier, value) => {
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
+        table:{
+            ...oldState.editors[identifier.editorId][identifier.id].table,
+            [identifier.colId]: {
+                ...oldState.editors[identifier.editorId][identifier.id].table[identifier.colId],
+                cells: {
+                    ...oldState.editors[identifier.editorId][identifier.id].table[identifier.colId].cells,
+                    [identifier.cellId]: value
+                }
+            }
+        }
+    })
+}
+
+export const updateColHeader = (oldState, identifier, value) => {
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
+        table:{
+            ...oldState.editors[identifier.editorId][identifier.id].table,
+            [identifier.colId]: {
+                ...oldState.editors[identifier.editorId][identifier.id].table[identifier.colId],
+                header: value
+            }
+        }
+    })
+}
+
+export const updateColCount = (oldState, identifier, values) => {
+    const table = oldState.editors[identifier.editorId][identifier.id].table;
+    let updateData = { table: { }}
+    let collKeys = Object.keys(table);
+    if(values.new < values.old){
+        collKeys = collKeys.slice(0, values.new);
+        for(let key of collKeys){
+            updateData.table[key] = table[key];
+        }
+    }else{
+        updateData.table = {...table};
+        Array(values.new - values.old).fill(null).map((u, i) => {
+            updateData.table[`Column ${Date.now()}`] = {...table[collKeys[collKeys.length - 1]] }
+        })
+    }
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, updateData)
+}
+
+export const updateRowCount = (oldState, identifier, values) => {
+    const table = oldState.editors[identifier.editorId][identifier.id].table;
+    let updateData = { table: { }}
+    let collKeys = Object.keys(table);
+
+    if(values.new < values.old){
+        for(let colKey of collKeys){
+            updateData.table[colKey] = {
+                ...table[colKey],
+                cells: {}
+            }
+            let rowKeys = Object.keys(table[colKey].cells).slice(0, values.new)
+            for(let rowKey of rowKeys){
+                updateData.table[colKey].cells[rowKey] = table[colKey].cells[rowKey]
+            }
+        }
+    }else{
+        for(let colKey of collKeys){
+            updateData.table[colKey] = {
+                ...table[colKey],
+                cells: {
+                    ...table[colKey].cells
+                }
+            }
+            let rowKeys = Object.keys(table[colKey].cells);
+            let lastItem = table[colKey].cells[rowKeys[rowKeys.length-1]]
+            Array(values.new - values.old).fill(null).map((u, i) => {
+                updateData.table[colKey].cells[`Item ${Date.now()}`] = lastItem
+            })
+        }
+    }
+
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, updateData)
+}

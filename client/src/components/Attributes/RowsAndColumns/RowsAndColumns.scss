@@ -1,0 +1,21 @@
+.RowsAndColumns{
+    input{
+        width: 3rem;
+    }
+    button{
+        padding: .5rem;
+    }
+    .Rows, .Columns{
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        div{
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            p{
+                padding: 0 .5rem;
+            }
+        }
+    }
+}

@@ -18,7 +18,11 @@ import { SIDE_MENU_SHOW_FIELDS,
         HANDLE_CHECK,
         UPDATE_OPTIONS,
         ADD_NEW_OPTIONS,
-        DELETE_OPTIONS
+        DELETE_OPTIONS,
+        UPDATE_CELL,
+        UPDATE_COL_HEADER,
+        UPDATE_COL_COUNT,
+        UPDATE_ROW_COUNT
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -164,5 +168,37 @@ export const deleteOptions = (identifier, id) => {
         type: DELETE_OPTIONS,
         identifier,
         id
+    }
+}
+
+export const updateCell = (identifier, value) => {
+    return {
+        type: UPDATE_CELL,
+        identifier,
+        value
+    }
+}
+
+export const updateColHeader = (identifier, value) => {
+    return {
+        type: UPDATE_COL_HEADER,
+        identifier,
+        value
+    }
+}
+
+export const updateColCount = (identifier, values) => {
+    return {
+        type: UPDATE_COL_COUNT,
+        identifier,
+        values
+    }
+}
+
+export const updateRowCount = (identifier, values) => {
+    return {
+        type: UPDATE_ROW_COUNT,
+        identifier,
+        values
     }
 }

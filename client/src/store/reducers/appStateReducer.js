@@ -19,6 +19,10 @@ import { SIDE_MENU_SHOW_BLOCKS,
         UPDATE_OPTIONS,
         ADD_NEW_OPTIONS,
         DELETE_OPTIONS,
+        UPDATE_CELL,
+        UPDATE_COL_HEADER,
+        UPDATE_COL_COUNT,
+        UPDATE_ROW_COUNT
     } from '../types/appStateTypes'
 
 import { changeSingleField, 
@@ -34,7 +38,11 @@ import { changeSingleField,
         handleCheck,
         updateOptions,
         addNewOptions,
-        deleteOptions
+        deleteOptions,
+        updateCell,
+        updateColHeader,
+        updateColCount,
+        updateRowCount
     } from './reducerFunctions'
 
 const initialState = {
@@ -91,6 +99,14 @@ const reducer = (state = initialState, action) => {
             return addNewOptions(state, action.identifier)
         case DELETE_OPTIONS:
             return deleteOptions(state, action.identifier, action.id)
+        case UPDATE_CELL:
+            return updateCell(state, action.identifier, action.value)
+        case UPDATE_COL_HEADER:
+            return updateColHeader(state, action.identifier, action.value)
+        case UPDATE_COL_COUNT:
+            return updateColCount(state, action.identifier, action.values)
+        case UPDATE_ROW_COUNT:
+            return updateRowCount(state, action.identifier, action.values)
 
 
         default: 

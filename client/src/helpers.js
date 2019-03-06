@@ -50,6 +50,34 @@ export const setBlockDefaults = (kind, newItem) => {
         newItem.styles.backgroundRepeat = 'no-repeat';
         newItem.styles.backgroundPosition = [0, 0];
         newItem.styles.backgroundSize = [100, 100]
+    }else if(kind == 'Table'){
+        newItem.table = {
+            "Column 1": {
+                header: 'Column Header',
+                cells: {
+                    'Item 1': 'New Item',
+                    'Item 2': 'New Item',
+                    'Item 3': 'New Item',
+                }
+            }, 
+            "Column 2": {
+                header: 'Column Header',
+                cells: {
+                    'Item 4': 'New Item',
+                    'Item 5': 'New Item',
+                    'Item 6': 'New Item',
+                }
+            }, 
+            "Column 3": {
+                header: 'Column Header',
+                cells: {
+                    'Item 7': 'New Item',
+                    'Item 8': 'New Item',
+                    'Item 9': 'New Item',
+                }
+            }, 
+        }
+        newItem.styles.backgroundColor = '#ffffff'
     }else{
         newItem.styles.backgroundColor = '#ffffff'
     }

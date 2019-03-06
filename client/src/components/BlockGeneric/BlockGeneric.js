@@ -22,6 +22,7 @@ import CoverPage from '../Blocks/CoverPage/CoverPage';
 import Paragraph from '../Blocks/Paragraph/Paragraph';
 import TermsOfService from '../Blocks/TermsOfService/TermsOfService';
 import Image from '../Blocks/Image/Image'
+import Table from '../Blocks/Table/Table';
 
 
 const source = {
@@ -170,13 +171,19 @@ class BlockGeneric extends React.Component {
 								deleteItemFromEditor={this.deleteItemFromEditor}
 								editorId={this.props.editorId} id={this.props.id}
 								children={this.props.children} />
+			case 'Table':
+				return <Table 	connectDragSource={this.props.connectDragSource}
+								deleteItemFromEditor={this.deleteItemFromEditor}
+								table={this.props.table}
+								editorId={this.props.editorId} id={this.props.id}
+								children={this.props.children} />
+
 		}
 	}
 
 	render() {
 		
 		const styles = this.getStyles()
-
 		return this.props.connectDropTarget(this.props.connectDragPreview(
 			<div className={classes.BlockGeneric}
 				onClick={this.selectForEditing} 

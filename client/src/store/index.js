@@ -24,4 +24,8 @@ export {
     updateOptions,
     addNewOptions,
     deleteOptions,
+    updateCell,
+    updateColHeader,
+    updateRowCount,
+    updateColCount
 } from './creators/appStateCreatros'
