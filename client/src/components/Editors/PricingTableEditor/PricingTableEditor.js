@@ -5,13 +5,13 @@ import FontSize from '../../Attributes/FontSize/FontSize';
 import Color from '../../Attributes/Color/Color';
 import FontFamily from '../../Attributes/FontFamily/FontFamily';
 import BackgroundColor from '../../Attributes/BackgroundColor/BackgroundColor';
-import TableSize from '../../Attributes/TableSize/TableSize';
+import TableSize from '../../Attributes/TableSize/TableSize'
 
-import { updateStyles, updateRowCount, updateColCount } from '../../../store'
+import { updateStyles, updateRowCount } from '../../../store'
 
-import classes from './TableEditor.scss'
+import classes from './PricingTableEditor.scss'
 
-class TableEditor extends Component {
+class PricingTableEditor extends Component {
 
     updateFont = (e) => {
         this.props.updateStyles({...this.props.selectedForEditing}, {
@@ -50,24 +50,14 @@ class TableEditor extends Component {
         })
     }
 
-    columnsChangeHandler = (num) => {
-        let old = Object.keys(this.props.table).length;
-        if(old + num < 1) return;
-        this.props.updateColCount(this.props.selectedForEditing, {
-            old,
-            new: old + num
-        })
-    }
-
     render() {
         return (
-            <div className={classes.TableEditor}>
+            <div className={classes.PricingTableEditor}>
                 <FontSize value={this.props.styles.fontSize} changeHandler={this.updateFont}/>
                 <Color value={this.props.styles.color} changeHandler={this.updateColor} />
                 <FontFamily value={this.props.styles.fontFamily} changeHandler={this.updateFontFamily} />
                 <BackgroundColor value={this.props.styles.backgroundColor} changeHandler={this.updateBackgroundColor} />
-                <TableSize title="Rows: " table={this.props.table} changeHandler={this.rowsChangeHandler} />
-                <TableSize title="Columns: " table={this.props.table} changeHandler={this.columnsChangeHandler} />
+                <TableSize title={"Items: "} table={this.props.table} changeHandler={this.rowsChangeHandler} />
             </div>
         );
     }
@@ -76,7 +66,7 @@ class TableEditor extends Component {
 const mapStateToProps = (state, props) => {
     return {
         styles: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].styles,
-        table: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].table        
+        table: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].table                
     }
 }
 
@@ -84,8 +74,7 @@ const mapDispatchToProps = (dispatch) => {
     return{
         updateStyles: (identifier, value) => dispatch(updateStyles(identifier, value)),
         updateRowCount: (identifier, values) => dispatch(updateRowCount(identifier, values)),        
-        updateColCount: (identifier, values) => dispatch(updateColCount(identifier, values)),        
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(PricingTableEditor);

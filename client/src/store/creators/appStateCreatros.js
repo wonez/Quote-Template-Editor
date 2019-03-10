@@ -22,7 +22,9 @@ import { SIDE_MENU_SHOW_FIELDS,
         UPDATE_CELL,
         UPDATE_COL_HEADER,
         UPDATE_COL_COUNT,
-        UPDATE_ROW_COUNT
+        UPDATE_ROW_COUNT,
+        UPDATE_SUBTOTALS,
+        UPDATE_DISCOUNT
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -200,5 +202,20 @@ export const updateRowCount = (identifier, values) => {
         type: UPDATE_ROW_COUNT,
         identifier,
         values
+    }
+}
+
+export const updateSubtotals = identifier => {
+    return {
+        type: UPDATE_SUBTOTALS,
+        identifier
+    }
+}
+
+export const updateDiscount = (identifier, value) => {
+    return{
+        type: UPDATE_DISCOUNT,
+        identifier,
+        value
     }
 }

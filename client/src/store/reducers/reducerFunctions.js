@@ -302,3 +302,31 @@ export const updateRowCount = (oldState, identifier, values) => {
 
     return updateItemInEditor(oldState, identifier.editorId, identifier.id, updateData)
 }
+
+export const updateSubtotals = (oldState, identifier) => {
+    const table = oldState.editors[identifier.editorId][identifier.id].table;
+    let updateData = {
+        table: {
+            ...table, 
+            "Subtotal": {
+                ...table['Subtotal'],
+                cells: {}
+            }
+        }
+    }
+    
+    const priceKeys = Object.keys(table['Price'].cells)
+    const qtyKeys = Object.keys(table['QTY'].cells)
+    const subtotalKeys = Object.keys(table['Subtotal'].cells)
+
+    subtotalKeys.forEach((key, i) => {
+        updateData.table['Subtotal'].cells[key] = (table['Price'].cells[priceKeys[i]] * table['QTY'].cells[qtyKeys[i]]).toFixed(2)
+    })
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, updateData)
+}
+
+export const updateDiscount = (oldState, identifier, value) => {
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
+        discount: value
+    })
+}

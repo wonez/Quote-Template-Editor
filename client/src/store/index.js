@@ -27,5 +27,7 @@ export {
     updateCell,
     updateColHeader,
     updateRowCount,
-    updateColCount
+    updateColCount,
+    updateSubtotals,
+    updateDiscount
 } from './creators/appStateCreatros'

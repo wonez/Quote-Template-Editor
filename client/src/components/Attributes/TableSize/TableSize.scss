@@ -1,0 +1,19 @@
+.TableSize{
+    input{
+        width: 3rem;
+    }
+    button{
+        padding: .5rem;
+    }
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    div{
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        p{
+            padding: 0 .5rem;
+        }
+    }
+}

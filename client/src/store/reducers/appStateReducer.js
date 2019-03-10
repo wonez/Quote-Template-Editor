@@ -22,7 +22,9 @@ import { SIDE_MENU_SHOW_BLOCKS,
         UPDATE_CELL,
         UPDATE_COL_HEADER,
         UPDATE_COL_COUNT,
-        UPDATE_ROW_COUNT
+        UPDATE_ROW_COUNT,
+        UPDATE_SUBTOTALS,
+        UPDATE_DISCOUNT
     } from '../types/appStateTypes'
 
 import { changeSingleField, 
@@ -42,7 +44,9 @@ import { changeSingleField,
         updateCell,
         updateColHeader,
         updateColCount,
-        updateRowCount
+        updateRowCount,
+        updateSubtotals,
+        updateDiscount
     } from './reducerFunctions'
 
 const initialState = {
@@ -107,7 +111,10 @@ const reducer = (state = initialState, action) => {
             return updateColCount(state, action.identifier, action.values)
         case UPDATE_ROW_COUNT:
             return updateRowCount(state, action.identifier, action.values)
-
+        case UPDATE_SUBTOTALS:
+            return updateSubtotals(state, action.identifier)
+        case UPDATE_DISCOUNT:
+            return updateDiscount(state, action.identifier, action.value)
 
         default: 
             return state;

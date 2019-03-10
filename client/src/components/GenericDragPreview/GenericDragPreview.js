@@ -7,6 +7,7 @@ import PageBreak from '../Blocks/PageBreak/PageBreak';
 import Table from '../Blocks/Table/Table'
 import TermsOfService from '../Blocks/TermsOfService/TermsOfService';
 import Image from '../Blocks/Image/Image'
+import PricingTable from '../Blocks/PricingTable/PricingTable'
 
 import TextInput from '../Fields/TextInput/TextInput';
 import DateInput from '../Fields/DateInput/DateInput';
@@ -25,6 +26,7 @@ const GenericDragPreview = React.memo(props => {
         case 'Table': return <Table />
         case 'Cover Page': return <CoverPage />
         case 'Terms Of Service': return <TermsOfService />
+        case 'Pricing Table': return <PricingTable />
         //fields
         case 'Text Input': return <TextInput preview />
         case 'Date Input': return <DateInput preview />

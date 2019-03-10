@@ -7,6 +7,7 @@ import ImageEditor from '../../components/Editors/ImageEditor/ImageEditor'
 import DropdownEditor from '../../components/Editors/DropdownEditor/DropdownEditor'
 import SignatureEditor from '../../components/Editors/SignatureEditor/SignatureEditor'
 import TableEditor from '../../components/Editors/TableEditor/TableEditor'
+import PricingTableEditor from '../../components/Editors/PricingTableEditor/PricingTableEditor'
 
 const Edit = (props) => {
     switch(props.selectedForEditing.kind){
@@ -17,7 +18,8 @@ const Edit = (props) => {
             return <ImageEditor selectedForEditing={props.selectedForEditing} />
         case 'Table':
             return <TableEditor selectedForEditing={props.selectedForEditing} />
-
+        case 'Pricing Table':
+            return <PricingTableEditor selectedForEditing={props.selectedForEditing} />
         case 'Text Input':
         case 'Date Input':
         case 'Initials Input':

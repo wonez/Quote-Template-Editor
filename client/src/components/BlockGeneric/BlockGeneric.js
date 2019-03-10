@@ -23,6 +23,7 @@ import Paragraph from '../Blocks/Paragraph/Paragraph';
 import TermsOfService from '../Blocks/TermsOfService/TermsOfService';
 import Image from '../Blocks/Image/Image'
 import Table from '../Blocks/Table/Table';
+import PricingTable from '../Blocks/PricingTable/PricingTable';
 
 
 const source = {
@@ -177,12 +178,18 @@ class BlockGeneric extends React.Component {
 								table={this.props.table}
 								editorId={this.props.editorId} id={this.props.id}
 								children={this.props.children} />
+			case 'Pricing Table':
+				return <PricingTable 	connectDragSource={this.props.connectDragSource}
+										deleteItemFromEditor={this.deleteItemFromEditor}
+										discount={this.props.discount}
+										table={this.props.table}
+										editorId={this.props.editorId} id={this.props.id}
+										children={this.props.children} />
 
 		}
 	}
 
 	render() {
-		
 		const styles = this.getStyles()
 		return this.props.connectDropTarget(this.props.connectDragPreview(
 			<div className={classes.BlockGeneric}

@@ -78,6 +78,43 @@ export const setBlockDefaults = (kind, newItem) => {
             }, 
         }
         newItem.styles.backgroundColor = '#ffffff'
+    }else if(kind == 'Pricing Table'){
+        newItem.table = {
+            "Name": {
+                header: 'Name',
+                cells: {
+                    'Item 1': 'New Item',
+                    'Item 2': 'New Item',
+                    'Item 3': 'New Item',
+                }
+            }, 
+            "Price": {
+                header: 'Price',
+                cells: {
+                    'Item 1': "0.00",
+                    'Item 2': "0.00",
+                    'Item 3': "0.00",
+                }
+            }, 
+            "QTY": {
+                header: 'QTY',
+                cells: {
+                    'Item 1': "1",
+                    'Item 2': "1",
+                    'Item 3': "1",
+                }
+            },  
+            "Subtotal": {
+                header: 'Subtotal',
+                cells: {
+                    'Item 1': "0.00",
+                    'Item 2': "0.00",
+                    'Item 3': "0.00",
+                }
+            },  
+        }
+        newItem.discount = 0;
+        newItem.styles.backgroundColor = '#ffffff'
     }else{
         newItem.styles.backgroundColor = '#ffffff'
     }
