@@ -2,6 +2,12 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path')
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const isAuthenticated = require('./isAuthenticated');
+
+require('./passport-config')
 
 const app = express()
 const port = process.env.PORT || 3000;
@@ -15,6 +21,15 @@ app.use(bodyParser.json())
 
 app.use(express.static('public'))
 
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'));
+
+//session
+app.use(session({ secret: 'quote', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 //cors
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -24,15 +39,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', require('./routes.js'));
-
-if(process.env.NODE_ENV === 'production'){
-  app.use(express.static('client/dist'))
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-  })
-}
+//routes
+app.use('/app', isAuthenticated, require('./routes/appRoutes.js'));
+app.use('', require('./routes/userRoutes.js'));
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}!`)

@@ -1,7 +1,7 @@
 import { LOGIN, LOGOUT } from '../types/authTypes'
 
 const initialState = {
-    isLogged: true
+    isLogged: false
 }
 
 const reducer = (state = initialState, action) => {

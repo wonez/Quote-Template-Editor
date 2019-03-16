@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import Aux from '../../hoc/Aux'
+
 import TextEditor from '../../components/Editors/TextEditor/TextEditor'
 import FieldEditor from '../../components/Editors/FieldEditor/FieldEditor'
 import ImageEditor from '../../components/Editors/ImageEditor/ImageEditor'
@@ -14,6 +16,13 @@ const Edit = (props) => {
         case 'Heading':
         case 'Paragraph': 
             return <TextEditor selectedForEditing={props.selectedForEditing} />
+            case 'Cover Page':
+            return (
+                <Aux>
+                    <TextEditor selectedForEditing={props.selectedForEditing} />
+                    <ImageEditor selectedForEditing={props.selectedForEditing} />
+                </Aux>
+            )
         case 'Image':
             return <ImageEditor selectedForEditing={props.selectedForEditing} />
         case 'Table':
@@ -29,6 +38,9 @@ const Edit = (props) => {
             return <DropdownEditor selectedForEditing={props.selectedForEditing} />
         case 'Signature Input':
             return <SignatureEditor selectedForEditing={props.selectedForEditing} />
+        case 'Logo':
+            return <ImageEditor selectedForEditing={props.selectedForEditing} />
+            // return <LogoEditor selectedForEditing={props.selectedForEditing} />
         default: 
             return null
     }

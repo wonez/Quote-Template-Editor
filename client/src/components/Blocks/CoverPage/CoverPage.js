@@ -13,11 +13,10 @@ const CoverPage = props => {
                     deleteItemFromEditor={props.deleteItemFromEditor} /> 
         </div>
     )
-        // preappend children bg image, title, subtitle, customer name, user company logo, text area
     return (
         <div className={classes.CoverPage} >
             {props.connectDragSource ? props.connectDragSource(toolbar) : toolbar}
-            <Children children={props.children} blockId={props.id} editorId={props.editorId} />
+            <Children styles={props.styles} children={props.children} blockId={props.id} editorId={props.editorId} />
         </div>
     )
 }

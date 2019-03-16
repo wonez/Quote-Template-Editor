@@ -1,0 +1,10 @@
+extends auth.pug
+
+block content
+    form(action="/signup", method="post")
+        input(type="text", name="username" placeholder="Username")
+        input(type="password", name="password" placeholder="Password")
+        input(type="password", name="confirmation" placeholder="Confirm Password")
+        p= message        
+        input(type="submit", value="Sign up")
+    a(href="/login") Already have an account?

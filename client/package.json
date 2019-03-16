@@ -17,6 +17,8 @@
     "react-dnd-html5-backend": "^7.0.2",
     "react-dom": "^16.8.0",
     "react-redux": "^6.0.0",
+    "react-resize-aware": "^2.7.2",
+    "react-resize-detector": "^3.4.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
@@ -39,6 +41,7 @@
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.2",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"

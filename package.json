@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "client": "cd client && npm start",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "dev": "cd client && npm run build && cp ./dist/bundle.min.js ../public/bundle.min.js && cp ./dist/styles.css ../public/styles.css && cd .. && npm run server"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,15 @@
   },
   "homepage": "https://github.com/wonez/Quote-Template-Editor#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "express": "^4.16.4",
-    "mongoose": "^5.4.10"
+    "express-session": "^1.15.6",
+    "mongoose": "^5.4.19",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "morgan": "^1.9.1",

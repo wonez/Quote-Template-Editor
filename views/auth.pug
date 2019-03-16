@@ -1,0 +1,44 @@
+html
+    head 
+        title Quote Template Editor
+        style(type="text/css").
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                font-family: Arial;
+            }
+            h1{
+                margin-bottom: 3rem;
+            }
+            form{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            input{
+                width: 60%;
+                padding: 10px;
+                border: 1px solid black;
+                border-radius: 5px;
+            }
+            input[type="text"]{
+                margin-bottom: 2rem;
+            }
+            input[type="submit"]{
+                background: black;
+                color: white;
+                cursor: pointer;
+            }
+            input[name="confirmation"]{
+                margin-top: 2rem;
+            }
+            p{
+                color: red;
+                margin: 2rem 0;
+            }
+    body
+        div.container
+            h1 Welcome to Quote Template Editor
+            block content

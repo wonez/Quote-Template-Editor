@@ -1,7 +1,7 @@
 module.exports = () => {
     const mongoose = require('mongoose')
     
-    mongoose.connect('mongodb://localhost:27017/qoute-template-editor',{
+    mongoose.connect('mongodb://admin:admin123@ds131765.mlab.com:31765/quote-template-editor',{
         useNewUrlParser: true, 
         useCreateIndex: true,
         useFindAndModify: false 

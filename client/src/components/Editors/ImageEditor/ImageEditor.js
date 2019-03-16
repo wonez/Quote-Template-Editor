@@ -48,7 +48,7 @@ class ImageEditor extends Component {
 
 const mapStateToProps = (state, props) => {
     return {
-        styles: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].styles
+        styles: props.selectedForEditing.blockId ? state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.blockId].children[props.selectedForEditing.id].styles : state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].styles
     }
 }
 

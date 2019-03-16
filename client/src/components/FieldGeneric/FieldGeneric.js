@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import classes from './FieldGeneric.scss'
 
+import { updateStyles } from '../../store'
+
 import { ItemTypes } from '../../dnd/types'
 import { DragSource } from 'react-dnd'
 
@@ -13,6 +15,11 @@ import InitialsInput from '../Fields/InitialsInput/InitialsInput';
 import Checkbox from '../Fields/Checkbox/Checkbox';
 import DropDownField from '../Fields/DropdownField/DropDownField';
 import SignatureInput from '../Fields/SignatureInput/SignatureInput';
+
+import { handleBackground } from '../../helpers'
+
+import ReactResizeDetector from 'react-resize-detector';
+import Logo from '../Fields/Logo/Logo';
 
 const source = {
     beginDrag(props, monitor, component) {
@@ -34,7 +41,7 @@ const collect = (connect, monitor) => {
 
 class FieldGeneric extends React.Component{
 
-    changeHandler = (e) => {
+    changeHandler = (e) => { 
         this.props.updateValue({
             id: this.props.id,
             editorId: this.props.editorId,
@@ -102,23 +109,37 @@ class FieldGeneric extends React.Component{
             case 'Checkbox Input':
                 return <Checkbox value={this.props.value} changeHandler={this.changeHandler}
                                  checked={this.props.checked} checkHandler={this.checkHandler} />
+            case 'Logo':
+                return <Logo styles={handleBackground(this.props.styles)} />
             default: null;
         }
     }
 
+    onResize = (width, height) => {
+        console.log(width, height)
+        this.props.updateStyles({editorId: this.props.editorId, blockId: this.props.blockId, id: this.props.id }, {
+            key: 'width',
+            val: `${width}px`
+        })
+        this.props.updateStyles({editorId: this.props.editorId, blockId: this.props.blockId, id: this.props.id }, {
+            key: 'height',
+            val: `${height}px`
+        })
+    }
+
     render(){
-        
-        if(this.props.kind == 'Signature Input' || this.props.kind == 'Dropdown Input'){
+
+        if(['Signature Input', 'Dropdown Input'].includes(this.props.kind)){
             return this.props.connectDragPreview(
                 <div key={this.props.id} 
                     onClick={this.selectForEditing}
                     className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
                     style={this.getStyles()}>
                     {this.props.kind == 'Signature Input' ? (
-                        <SignatureInput editorId={this.props.editorId} blockId={this.props.blockId} id={this.props.id}
-                                        value={this.props.value} 
-                                        canvasHandler={this.canvasHandler}
-                                        connectDragSource={this.props.connectDragSource} />
+                            <SignatureInput editorId={this.props.editorId} blockId={this.props.blockId} id={this.props.id}
+                                            value={this.props.value} 
+                                            canvasHandler={this.canvasHandler}
+                                            connectDragSource={this.props.connectDragSource} />
                     ) : (
                         <DropDownField  value={this.props.value} changeHandler={this.changeHandler}
                                         options={this.props.options}
@@ -128,10 +149,11 @@ class FieldGeneric extends React.Component{
             )
         }else{
             return this.props.connectDragSource(
-                <div key={this.props.id} 
+                <div key={this.props.id}
                     onClick={this.selectForEditing}
-                    className={this.props.selectedForEditing.id == this.props.id ? classes.Editing : null}
+                    className={this.props.selectedForEditing.id == this.props.id ? ( 'Text Input' == this.props.kind ? [classes.Editing, classes.Resizible].join(' ') : classes.Editing ) : null}
                     style={this.getStyles()}>
+                    { 'Text Input' == this.props.kind ? <ReactResizeDetector handleWidth handleHeight skipOnMount refreshMode="debounce" refreshRate={500} onResize={this.onResize} /> : null }
                     {this.getItem()}
                 </div>
             )
@@ -153,7 +175,8 @@ const mapDispatchToProps = (dispatch) => {
         selectForEditing: data => dispatch(selectForEditing(data)),
         unselectFromMoving: () => dispatch(unselectFromMoving()),
         updateValue: (identifier, value) => dispatch(updateValue(identifier, value)),
-        handleCheck: identifier => dispatch(handleCheck(identifier))
+        handleCheck: identifier => dispatch(handleCheck(identifier)),
+        updateStyles: (identifier, value) => dispatch(updateStyles(identifier, value))
     }
 }
 

@@ -1,0 +1,15 @@
+.Logo{
+    border: 1px solid #777;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+    background-color: white;
+    background-size: contain;
+    background-position: center;
+    &:hover{
+        cursor: pointer;
+    }
+}

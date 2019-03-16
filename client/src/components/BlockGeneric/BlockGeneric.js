@@ -15,6 +15,8 @@ import { getItemType, setFieldDefaults } from '../../helpers'
 import { ItemTypes } from '../../dnd/types'
 import { DragSource, DropTarget } from 'react-dnd'
 
+import { handleBackground } from '../../helpers'
+
 import classes from './BlockGeneric.scss'
 
 import Heading from '../Blocks/Heading/Heading';
@@ -130,16 +132,13 @@ class BlockGeneric extends React.Component {
 			style.height = '10rem';
 		}
 		if(this.props.kind == 'Cover Page'){
-			style.height = "95%";
+			backgroundStyles = handleBackground(this.props.styles)
 		}
 		if(this.props.selectedForEditing.id == this.props.id){
 			style.outline = '.3rem solid skyblue';
 		}
 		if(this.props.kind == 'Image'){
-			backgroundStyles.backgroundImage = `url('${this.props.styles.backgroundImage}')`
-			backgroundStyles.backgroundPosition = `${this.props.styles.backgroundPosition[0]}px ${this.props.styles.backgroundPosition[1]}px`
-			backgroundStyles.backgroundSize = `${this.props.styles.backgroundSize[0]}px ${this.props.styles.backgroundSize[1]}px`
-			backgroundStyles.backgroundRepeat = this.props.styles.backgroundRepeat
+			backgroundStyles = handleBackground(this.props.styles)
 		}
 		return {backgroundStyles, style}
 	}
@@ -152,7 +151,8 @@ class BlockGeneric extends React.Component {
 								editorId={this.props.editorId} id={this.props.id}
 								children={this.props.children}/>
 			case 'Cover Page': 
-				return <CoverPage 	connectDragSource={this.props.connectDragSource}
+				return <CoverPage 	styles={backgroundStyles}
+									connectDragSource={this.props.connectDragSource}
 									deleteItemFromEditor={this.deleteItemFromEditor}
 									editorId={this.props.editorId} id={this.props.id}
 									children={this.props.children} />
