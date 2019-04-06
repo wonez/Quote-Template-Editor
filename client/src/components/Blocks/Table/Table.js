@@ -47,7 +47,7 @@ class Table extends Component {
     render() {
         let toolbar = (
             <div>
-                <Toolbar title={"Table"}
+                <Toolbar title={this.props.blockName ? this.props.blockName : "Table Block"}
                         deleteItemFromEditor={this.props.deleteItemFromEditor} /> 
             </div>
         )

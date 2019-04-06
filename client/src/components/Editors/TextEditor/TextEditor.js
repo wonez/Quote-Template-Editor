@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateStyles  } from '../../../store'
+import { updateStyles, updateBlockName  } from '../../../store'
 import classes from './TextEditor.scss'
 
 import FontSize from '../../Attributes/FontSize/FontSize'
@@ -8,8 +8,13 @@ import Color from '../../Attributes/Color/Color'
 import FontFamily from '../../Attributes/FontFamily/FontFamily'
 import TextAlign from '../../Attributes/TextAlign/TextAlign'
 import BackgroundColor from '../../Attributes/BackgroundColor/BackgroundColor';
+import BlockName from '../../Attributes/BlockName/BlockName';
 
 class TextEditor extends React.Component{
+
+    updateBlockName = (e) => {
+        this.props.updateBlockName({...this.props.selectedForEditing}, e.target.value)
+    }
 
     updateFont = (e) => {
         this.props.updateStyles({...this.props.selectedForEditing}, {
@@ -49,6 +54,7 @@ class TextEditor extends React.Component{
     render(){
         return(
             <div className={classes.TextEditor}>
+                <BlockName value={this.props.blockName} changeHandler={this.updateBlockName} />
                 <FontSize value={this.props.styles.fontSize} changeHandler={this.updateFont}/>
                 <Color value={this.props.styles.color} changeHandler={this.updateColor} />
                 <FontFamily value={this.props.styles.fontFamily} changeHandler={this.updateFontFamily} />
@@ -61,13 +67,15 @@ class TextEditor extends React.Component{
 
 const mapStateToProps = (state, props) => {
     return {
-        styles: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].styles
+        styles: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].styles,
+        blockName: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].blockName
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return{
-        updateStyles: (identifier, value) => dispatch(updateStyles(identifier, value))
+        updateStyles: (identifier, value) => dispatch(updateStyles(identifier, value)),
+        updateBlockName: (identifier, blockName) => dispatch(updateBlockName(identifier, blockName))
     }
 }
 

@@ -1,22 +1,17 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import axios from 'axios'
 
 import Landing from '../Landing/Landing'
+import TermsOfServiceModifier from '../TermsOfServiceModifier/TermsOfServiceModifier'
 
 class App extends React.Component{
-
-    componentDidMount(){
-        axios.get('/app/get-current').then(res => {
-            console.log(res);
-        })
-    }
 
     render(){
         return(
             <BrowserRouter>
 				<Switch>
 					<Route path='/' exact component={Landing}/>
+					<Route path='/terms-of-service' exact component={TermsOfServiceModifier}/>
 					<Redirect to='/' />
 				</Switch>
 			</BrowserRouter>

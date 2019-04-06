@@ -1,8 +1,4 @@
 export {
-    login,
-    logout
-} from './creators/authCreators'
-export {
     showBLocks,
     showFields,
     selectForDragging,
@@ -29,5 +25,21 @@ export {
     updateRowCount,
     updateColCount,
     updateSubtotals,
-    updateDiscount
+    updateDiscount,
+    setEditors,
+    updateBlockName,
+    setText
 } from './creators/appStateCreatros'
+export {
+    getUserTemplates,
+    createNewTemplate,
+    removeUserTemplate,
+    renameUserTemplate,
+    getSingleTemplate,
+    saveChanges,
+    createTermsOfService,
+    getTermsOfService,
+    deleteTermsOfService,
+    getSingleTermsOfService,
+    updateTermsOfService
+} from './creators/asyncCreators'

@@ -6,4 +6,8 @@
     &:not(:last-child){
         margin-bottom: 1rem;
     }
+    &:hover{
+        cursor: pointer;
+        background: whitesmoke;
+    }
 }

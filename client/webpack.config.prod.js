@@ -23,7 +23,7 @@ module.exports = {
                 exclude: [
                     path.resolve(__dirname, "node_modules")
                 ],
-                loader: 'babel-loader'
+                loader: 'babel-loader',
             },
             {
                 test: /\.scss$/,
@@ -35,7 +35,6 @@ module.exports = {
                             modules: true,
                             localIdentName: '[name]__[local]--[hash:base64:5]',
                             importLoaders: 2,
-                            sourceMap: true
                         }
                     },
                     {
@@ -44,14 +43,10 @@ module.exports = {
                             plugins: () => [require('autoprefixer')({
                                 'browsers': ['> 1%', 'last 2 versions']
                             })],
-                            sourceMap: true
                         }
                     },
                     { 
                         loader: 'sass-loader',
-                        options: {
-                            sourceMap: true,
-                        }
                     }
                 ]
             }

@@ -1,3 +1,5 @@
+import { saveChanges } from '../creators/asyncCreators'
+
 const updateItemInEditor = (state, editorId, id, updateData) => ({
     ...state,
     editors: {
@@ -49,6 +51,7 @@ export const moveItemInsideEditor = (oldState, coords) => {
 }
 
 export const addFieldToBlock = (oldState, data) => {
+    if(!oldState.editors[data.editorId][data.blockId].children) return {...oldState}
     return updateChildInBlock(oldState, data.editorId, data.blockId, data.newItem.id, data.newItem)
 }
 
@@ -90,6 +93,9 @@ export const updateValue = (oldState, identifier, value) => {
         return updateItemInEditor(oldState, identifier.editorId, identifier.id, { value })
 } 
 
+export const updateBlockName = (oldState, identifier, blockName) => {
+    return updateItemInEditor(oldState, identifier.editorId, identifier.id, { blockName })
+} 
 
 export const updateStyles = (oldState, identifier, value) => {
     if(identifier.blockId){
@@ -129,6 +135,7 @@ export const moveField = (oldState, target) => {
     let newState = null;
     //append field to target
     if(target.blockId){
+        if(!oldState.editors[target.editorId][target.blockId].children) return changeSingleField(oldState, 'selectedForEditing', {})
         newState = updateChildInBlock(oldState, target.editorId, target.blockId, source.id, {
             ...sourceData,
             ...target.coords,
@@ -329,4 +336,52 @@ export const updateDiscount = (oldState, identifier, value) => {
     return updateItemInEditor(oldState, identifier.editorId, identifier.id, {
         discount: value
     })
+}
+
+export const appendTemplate = (oldState, template) => {
+    return{
+        ...oldState,
+        templates: oldState.templates.concat(template)
+    }
+}
+
+export const removeTemplate = (oldState, id) => {
+    let templates = [];
+    for(let template of oldState.templates){
+        if(template._id != id)
+            templates.push(template)
+    }
+    return changeSingleField(oldState, 'templates', templates)
+}
+
+export const renameTemplate = (oldState, id, title) => {
+    let templates = []
+    for(let template of oldState.templates){
+        if(template._id == id){
+            templates.push({
+                ...template,
+                title
+            })
+        }else{
+            templates.push(template)
+        }
+    }
+    return changeSingleField(oldState, 'templates', templates)
+}
+
+export const changes = (oldState) => {
+    const timeout = setTimeout(() => {
+        saveChanges(oldState.templateId, oldState.editors)
+    }, 5000)//5 seconds autosave
+    if(oldState.timeout){
+        clearTimeout(oldState.timeout);
+    }
+    return {
+        ...oldState,
+        timeout
+    }
+}
+
+export const setText = (oldState, text) => {
+    return updateItemInEditor(oldState, oldState.selectedForEditing.editorId, oldState.selectedForEditing.id, { text })
 }

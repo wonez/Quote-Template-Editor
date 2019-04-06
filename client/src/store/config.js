@@ -6,14 +6,14 @@ import {
     compose
 } from 'redux'
 
-import auth from './reducers/authReducer'
 import appState from './reducers/appStateReducer'
+import gui from './reducers/guiReducer'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-    auth,
-    appState
+    appState,
+    gui
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

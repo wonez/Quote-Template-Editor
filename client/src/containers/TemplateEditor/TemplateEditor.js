@@ -33,13 +33,18 @@ const editorTarget = {
                     kind: props.selectedForDragging,
                 });
             }
-        } else { // move item inside editor
-            if(props.selectedForMoving.blockId){// move item from block to editor
+        } else {
+            if(props.selectedForMoving.editorId != props.id){//move item from editor to editor
                 props.moveField({
                     editorId: props.id,
                     coords: getCoords(component, monitor.getSourceClientOffset())
                 })
-            }else{
+            }else if(props.selectedForMoving.blockId){// move item from block to editor
+                props.moveField({
+                    editorId: props.id,
+                    coords: getCoords(component, monitor.getSourceClientOffset())
+                })
+            }else{ //move inside editor
                 let coords = monitor.getDifferenceFromInitialOffset()
                 props.moveItemInsideEditor(coords)
             }

@@ -8,7 +8,7 @@ import Children from '../../Children/Children'
 const Paragraph = props => {
     let toolbar = (
         <div>
-            <Toolbar title={"Paragraph Block"}
+            <Toolbar title={props.blockName ? props.blockName : "Paragraph Block"}
                      deleteItemFromEditor={props.deleteItemFromEditor} /> 
         </div>
     )

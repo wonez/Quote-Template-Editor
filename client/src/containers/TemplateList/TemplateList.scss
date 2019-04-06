@@ -1,5 +1,43 @@
 .TemplateList{
     text-align: center;
     border: .5rem solid black;
-    // height: calc(100vh - 4rem);
+    padding: 1rem;
+    .CreateNew{
+        width: 100%;
+        padding: .5rem 0;
+        margin-bottom: 1rem;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .Title{
+        padding: .5rem 0;
+        p{
+            text-align: left;
+            cursor: pointer;
+        }
+    }
+    .Selected{
+        font-weight: bold;
+    }
+    .TitleInput{
+        border: 1px solid;
+        font-weight: bold;
+        padding: .3rem;
+    }
+    .Buttons{
+        display: flex;
+        justify-content: flex-start;
+        padding-top: .5rem;
+        a{
+            padding: .5rem 1rem;
+            color: red;
+            border: 1px solid;
+            cursor: pointer;
+            &:last-child{
+                margin-left: .5rem;
+                color: green;
+            }
+        }
+    }
 }

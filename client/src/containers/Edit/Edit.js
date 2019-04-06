@@ -10,13 +10,21 @@ import DropdownEditor from '../../components/Editors/DropdownEditor/DropdownEdit
 import SignatureEditor from '../../components/Editors/SignatureEditor/SignatureEditor'
 import TableEditor from '../../components/Editors/TableEditor/TableEditor'
 import PricingTableEditor from '../../components/Editors/PricingTableEditor/PricingTableEditor'
+import TermsOfServiceEditor from '../../components/Editors/TermsOfServiceEditor/TermsOfServiceEditor'
 
 const Edit = (props) => {
     switch(props.selectedForEditing.kind){
         case 'Heading':
         case 'Paragraph': 
             return <TextEditor selectedForEditing={props.selectedForEditing} />
-            case 'Cover Page':
+        case 'Terms Of Service':
+            return (
+                <Aux>
+                    <TextEditor selectedForEditing={props.selectedForEditing} />
+                    <TermsOfServiceEditor selectedForEditing={props.selectedForEditing} />
+                </Aux>
+            )
+        case 'Cover Page':
             return (
                 <Aux>
                     <TextEditor selectedForEditing={props.selectedForEditing} />
@@ -24,11 +32,12 @@ const Edit = (props) => {
                 </Aux>
             )
         case 'Image':
-            return <ImageEditor selectedForEditing={props.selectedForEditing} />
+            return <ImageEditor selectedForEditing={props.selectedForEditing} name />
         case 'Table':
             return <TableEditor selectedForEditing={props.selectedForEditing} />
         case 'Pricing Table':
             return <PricingTableEditor selectedForEditing={props.selectedForEditing} />
+        
         case 'Text Input':
         case 'Date Input':
         case 'Initials Input':
@@ -40,7 +49,6 @@ const Edit = (props) => {
             return <SignatureEditor selectedForEditing={props.selectedForEditing} />
         case 'Logo':
             return <ImageEditor selectedForEditing={props.selectedForEditing} />
-            // return <LogoEditor selectedForEditing={props.selectedForEditing} />
         default: 
             return null
     }

@@ -50,9 +50,6 @@ class GenericDragLayer extends React.Component {
         if(this.props.selectedForDragging == 'Cover Page'){
             style.height = "85%";
         }
-        if(this.props.selectedForDragging == 'Text Input'){
-            style.width = 'auto'
-        }
 
         return (
             <div className={classes.GenericDragLayer} style={style}>

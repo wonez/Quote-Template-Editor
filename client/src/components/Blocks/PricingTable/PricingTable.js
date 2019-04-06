@@ -82,7 +82,7 @@ class PricingTable extends Component {
 
         let toolbar = (
             <div>
-                <Toolbar title="Pricing Table" 
+                <Toolbar title={this.props.blockName ? this.props.blockName : "Pricing Table Block"}
                          deleteItemFromEditor={this.props.deleteItemFromEditor}/>
             </div>
         )

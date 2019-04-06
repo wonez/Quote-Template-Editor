@@ -6,12 +6,17 @@ import Color from '../../Attributes/Color/Color';
 import FontFamily from '../../Attributes/FontFamily/FontFamily';
 import BackgroundColor from '../../Attributes/BackgroundColor/BackgroundColor';
 import TableSize from '../../Attributes/TableSize/TableSize';
+import BlockName from '../../Attributes/BlockName/BlockName'
 
-import { updateStyles, updateRowCount, updateColCount } from '../../../store'
+import { updateStyles, updateRowCount, updateColCount, updateBlockName } from '../../../store'
 
 import classes from './TableEditor.scss'
 
 class TableEditor extends Component {
+
+    updateBlockName = (e) => {
+        this.props.updateBlockName({...this.props.selectedForEditing}, e.target.value)
+    }
 
     updateFont = (e) => {
         this.props.updateStyles({...this.props.selectedForEditing}, {
@@ -62,6 +67,7 @@ class TableEditor extends Component {
     render() {
         return (
             <div className={classes.TableEditor}>
+                <BlockName value={this.props.blockName} changeHandler={this.updateBlockName} />
                 <FontSize value={this.props.styles.fontSize} changeHandler={this.updateFont}/>
                 <Color value={this.props.styles.color} changeHandler={this.updateColor} />
                 <FontFamily value={this.props.styles.fontFamily} changeHandler={this.updateFontFamily} />
@@ -76,7 +82,8 @@ class TableEditor extends Component {
 const mapStateToProps = (state, props) => {
     return {
         styles: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].styles,
-        table: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].table        
+        table: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].table,
+        blockName: state.appState.editors[props.selectedForEditing.editorId][props.selectedForEditing.id].blockName        
     }
 }
 
@@ -85,6 +92,7 @@ const mapDispatchToProps = (dispatch) => {
         updateStyles: (identifier, value) => dispatch(updateStyles(identifier, value)),
         updateRowCount: (identifier, values) => dispatch(updateRowCount(identifier, values)),        
         updateColCount: (identifier, values) => dispatch(updateColCount(identifier, values)),        
+        updateBlockName: (identifier, blockName) => dispatch(updateBlockName(identifier, blockName))        
     }
 }
 

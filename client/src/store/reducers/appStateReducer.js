@@ -24,7 +24,14 @@ import { SIDE_MENU_SHOW_BLOCKS,
         UPDATE_COL_COUNT,
         UPDATE_ROW_COUNT,
         UPDATE_SUBTOTALS,
-        UPDATE_DISCOUNT
+        UPDATE_DISCOUNT,
+        USER_TEMPLATES,
+        APPEND_TEMPLATE,
+        REMOVE_TEMPLATE,
+        RENAME_TEMPLATE,
+        SET_EDITORS,
+        UPDATE_BLOCK_NAME,
+        SET_TEXT
     } from '../types/appStateTypes'
 
 import { changeSingleField, 
@@ -46,7 +53,13 @@ import { changeSingleField,
         updateColCount,
         updateRowCount,
         updateSubtotals,
-        updateDiscount
+        updateDiscount,
+        appendTemplate,
+        removeTemplate,
+        renameTemplate,
+        changes,
+        updateBlockName,
+        setText
     } from './reducerFunctions'
 
 const initialState = {
@@ -54,9 +67,10 @@ const initialState = {
     selectedForDragging: '',
     selectedForMoving: {},
     selectedForEditing: {},
-    editors:{
-        Editor1: {}
-    }
+    templates: [],
+    templateId: null,
+    editors: null,
+    timeout: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -70,9 +84,9 @@ const reducer = (state = initialState, action) => {
         case UNSELECT_FROM_DRAGGING: 
             return changeSingleField(state, 'selectedForDragging', '') 
         case ADD_ITEM_TO_EDITOR: 
-            return addItemToEditor(state, action.data)
+            return changes(addItemToEditor(state, action.data))
         case DELETE_ITEM_FROM_EDITOR: 
-            return deleteItemFromEditor(state, action.data)
+            return changes(deleteItemFromEditor(state, action.data))
         case SELECT_FOR_EDITING: 
             return changeSingleField(state, 'selectedForEditing', action.data) 
         case UNSELECT_FROM_EDITING: 
@@ -81,41 +95,54 @@ const reducer = (state = initialState, action) => {
             return changeSingleField(state, 'selectedForMoving', action.data) 
         case UNSELECT_FROM_MOVING: 
             return changeSingleField(state, 'selectedForMoving', {}) 
-        case MOVE_ITEM_INSIDE_EDITOR:
-            return moveItemInsideEditor(state, action.data)
+        case MOVE_ITEM_INSIDE_EDITOR: 
+            return changes(moveItemInsideEditor(state, action.data))
         case ADD_FIELD_TO_BLOCK: 
-            return addFieldToBlock(state, action.data)
-        case MOVE_FIELD_INSIDE_BLOCK:
-            return moveFieldInsideBlock(state, action.coords)
-        case PAGE_BREAK:
-            return pageBreak(state, action.editorId) 
+            return changes(addFieldToBlock(state, action.data))
+        case MOVE_FIELD_INSIDE_BLOCK: 
+            return changes(moveFieldInsideBlock(state, action.coords))
+        case PAGE_BREAK: 
+            return changes(pageBreak(state, action.editorId))
         case UPDATE_VALUE:
-            return updateValue(state, action.identifier, action.value)
+            return changes(updateValue(state, action.identifier, action.value))
         case UPDATE_STYLES: 
-            return updateStyles(state, action.identifier, action.value)
-        case MOVE_FIELD:
-            return moveField(state, action.target)
-        case HANDLE_CHECK:
-            return handleCheck(state, action.target)
+            return changes(updateStyles(state, action.identifier, action.value))
+        case MOVE_FIELD: 
+            return changes(moveField(state, action.target))
+        case HANDLE_CHECK: 
+            return changes(handleCheck(state, action.target))
         case UPDATE_OPTIONS: 
-            return updateOptions(state, action.identifier, action.value)
-        case ADD_NEW_OPTIONS:
-            return addNewOptions(state, action.identifier)
-        case DELETE_OPTIONS:
-            return deleteOptions(state, action.identifier, action.id)
-        case UPDATE_CELL:
-            return updateCell(state, action.identifier, action.value)
-        case UPDATE_COL_HEADER:
-            return updateColHeader(state, action.identifier, action.value)
-        case UPDATE_COL_COUNT:
-            return updateColCount(state, action.identifier, action.values)
-        case UPDATE_ROW_COUNT:
-            return updateRowCount(state, action.identifier, action.values)
-        case UPDATE_SUBTOTALS:
-            return updateSubtotals(state, action.identifier)
-        case UPDATE_DISCOUNT:
-            return updateDiscount(state, action.identifier, action.value)
-
+            return changes(updateOptions(state, action.identifier, action.value))
+        case ADD_NEW_OPTIONS: 
+            return changes(addNewOptions(state, action.identifier))
+        case DELETE_OPTIONS: 
+            return changes(deleteOptions(state, action.identifier, action.id))
+        case UPDATE_CELL: 
+            return changes(updateCell(state, action.identifier, action.value))
+        case UPDATE_COL_HEADER: 
+            return changes(updateColHeader(state, action.identifier, action.value))
+        case UPDATE_COL_COUNT: 
+            return changes(updateColCount(state, action.identifier, action.values))
+        case UPDATE_ROW_COUNT: 
+            return changes(updateRowCount(state, action.identifier, action.values))
+        case UPDATE_SUBTOTALS: 
+            return changes(updateSubtotals(state, action.identifier))
+        case UPDATE_DISCOUNT: 
+            return changes(updateDiscount(state, action.identifier, action.value))
+        case USER_TEMPLATES: 
+            return changeSingleField(state, 'templates', action.templates)
+        case APPEND_TEMPLATE:
+            return appendTemplate(state, action.template)
+        case REMOVE_TEMPLATE:
+            return removeTemplate(state, action.id)
+        case RENAME_TEMPLATE:
+            return renameTemplate(state, action.id, action.title)
+        case SET_EDITORS:
+            return changeSingleField(changeSingleField(state, 'editors', action.editors), 'templateId', action.id)
+        case UPDATE_BLOCK_NAME:
+            return changes(updateBlockName(state, action.identifier, action.blockName))
+        case SET_TEXT:
+            return changes(setText(state, action.text))
         default: 
             return state;
     }

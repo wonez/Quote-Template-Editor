@@ -24,7 +24,14 @@ import { SIDE_MENU_SHOW_FIELDS,
         UPDATE_COL_COUNT,
         UPDATE_ROW_COUNT,
         UPDATE_SUBTOTALS,
-        UPDATE_DISCOUNT
+        UPDATE_DISCOUNT,
+        USER_TEMPLATES,
+        APPEND_TEMPLATE,
+        REMOVE_TEMPLATE,
+        RENAME_TEMPLATE,
+        SET_EDITORS,
+        UPDATE_BLOCK_NAME,
+        SET_TEXT
     } from '../types/appStateTypes'
 
 export const showBLocks = () => {
@@ -217,5 +224,57 @@ export const updateDiscount = (identifier, value) => {
         type: UPDATE_DISCOUNT,
         identifier,
         value
+    }
+}
+
+export const userTemplates = (templates) => {
+    return{
+        type: USER_TEMPLATES,
+        templates
+    }
+}
+
+export const appendTemplate = template => {
+    return{
+        type: APPEND_TEMPLATE,
+        template
+    }
+} 
+
+export const removeTemplate = id => {
+    return{
+        type: REMOVE_TEMPLATE,
+        id
+    }
+} 
+
+export const renameTemplate = (id, title) => {
+    return{
+        type: RENAME_TEMPLATE, 
+        id, 
+        title
+    }
+}
+
+export const setEditors = (editors, id) => {
+    return {
+        type: SET_EDITORS,
+        editors,
+        id
+    }
+}
+
+export const updateBlockName = (identifier, blockName) => {
+    return {
+        type: UPDATE_BLOCK_NAME,
+        identifier,
+        blockName
+    }
+}
+
+export const setText = text => {
+    return{
+        type: SET_TEXT,
+        text
     }
 }

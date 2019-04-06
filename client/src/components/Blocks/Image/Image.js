@@ -8,7 +8,7 @@ import classes from './Image.scss'
 const Image = (props) => {
     let toolbar = (
         <div>
-            <Toolbar title={"Image Block"}
+            <Toolbar title={props.blockName ? props.blockName : "Image Block"}
                         deleteItemFromEditor={props.deleteItemFromEditor} /> 
         </div>
     )

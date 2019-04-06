@@ -4,13 +4,16 @@ import { connect } from 'react-redux'
 import TemplateEditor from '../TemplateEditor/TemplateEditor';
 
 import classes from './TemplateEditorList.scss'
+import EditorNotSelected from '../EditorNotSelected/EditorNotSelected';
 
 const TemplateEditorList = props => {
     return(
         <div className={classes.TemplateEditorList}>
-            {Object.keys(props.editors).map(editor => (
-                <TemplateEditor key={editor} items={props.editors[editor]} id={editor}/>
-            ))}
+            {props.editors ? 
+                Object.keys(props.editors).map(editor => (<TemplateEditor key={editor} items={props.editors[editor]} id={editor}/>)) 
+                :
+                <EditorNotSelected />
+            }
         </div>
     )
 }

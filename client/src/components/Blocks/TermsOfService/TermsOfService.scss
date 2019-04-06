@@ -9,7 +9,7 @@
     }
     .Items{
         position: relative;
-        overflow: hidden;
+        overflow: scroll;
         padding: 1rem;
         height: calc(100% - 2rem);
         width: 100%;

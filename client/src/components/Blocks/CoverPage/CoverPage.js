@@ -9,14 +9,14 @@ const CoverPage = props => {
     let toolbar = (
         <div>
             <Toolbar selectForEditing={props.selectForEditing} 
-                    title={"Cover Page"}
+                    title={props.blockName ? props.blockName : "Cover Page Block"}
                     deleteItemFromEditor={props.deleteItemFromEditor} /> 
         </div>
     )
     return (
         <div className={classes.CoverPage} >
             {props.connectDragSource ? props.connectDragSource(toolbar) : toolbar}
-            <Children styles={props.styles} children={props.children} blockId={props.id} editorId={props.editorId} />
+            <Children styles={props.styles } children={props.children} blockId={props.id} editorId={props.editorId} />
         </div>
     )
 }

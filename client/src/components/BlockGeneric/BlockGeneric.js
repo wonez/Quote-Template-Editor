@@ -147,39 +147,47 @@ class BlockGeneric extends React.Component {
 		switch(this.props.kind){
 			case 'Heading': 
 				return <Heading connectDragSource={this.props.connectDragSource}
+								blockName={this.props.blockName}
 								deleteItemFromEditor={this.deleteItemFromEditor}
 								editorId={this.props.editorId} id={this.props.id}
 								children={this.props.children}/>
 			case 'Cover Page': 
 				return <CoverPage 	styles={backgroundStyles}
 									connectDragSource={this.props.connectDragSource}
+									blockName={this.props.blockName}
 									deleteItemFromEditor={this.deleteItemFromEditor}
 									editorId={this.props.editorId} id={this.props.id}
 									children={this.props.children} />
 			case 'Paragraph': 
 				return <Paragraph 	connectDragSource={this.props.connectDragSource}
+									blockName={this.props.blockName}
 									deleteItemFromEditor={this.deleteItemFromEditor}
 									editorId={this.props.editorId} id={this.props.id}
 									children={this.props.children} />
 			case 'Terms Of Service': 
 				return <TermsOfService 	connectDragSource={this.props.connectDragSource}
+										blockName={this.props.blockName}
+										text={this.props.text}
 										deleteItemFromEditor={this.deleteItemFromEditor}
 										editorId={this.props.editorId} id={this.props.id}
 										children={this.props.children} />
 			case 'Image': 
 				return <Image 	styles={backgroundStyles}
 								connectDragSource={this.props.connectDragSource}
+								blockName={this.props.blockName}
 								deleteItemFromEditor={this.deleteItemFromEditor}
 								editorId={this.props.editorId} id={this.props.id}
 								children={this.props.children} />
 			case 'Table':
 				return <Table 	connectDragSource={this.props.connectDragSource}
+								blockName={this.props.blockName}
 								deleteItemFromEditor={this.deleteItemFromEditor}
 								table={this.props.table}
 								editorId={this.props.editorId} id={this.props.id}
 								children={this.props.children} />
 			case 'Pricing Table':
 				return <PricingTable 	connectDragSource={this.props.connectDragSource}
+										blockName={this.props.blockName}
 										deleteItemFromEditor={this.deleteItemFromEditor}
 										discount={this.props.discount}
 										table={this.props.table}

@@ -50,6 +50,7 @@ export const handleBackground = (styles) => {
 export const setBlockDefaults = (kind, newItem) => {
     newItem.children = {}
     newItem.styles.width = "95%";
+    newItem.blockName = `${kind} Block`
     if (kind == 'Cover Page') {
         newItem.styles.backgroundColor = '#ffffff'
         newItem.styles.height = "95%"
@@ -141,6 +142,7 @@ export const setBlockDefaults = (kind, newItem) => {
         newItem.styles.backgroundPosition = [0, 0];
         newItem.styles.backgroundSize = [100, 100]
     } else if (kind == 'Table') {
+        newItem.children = undefined
         newItem.table = {
             "Column 1": {
                 header: 'Column Header',
@@ -169,6 +171,7 @@ export const setBlockDefaults = (kind, newItem) => {
         }
         newItem.styles.backgroundColor = '#ffffff'
     } else if (kind == 'Pricing Table') {
+        newItem.children = undefined
         newItem.table = {
             "Name": {
                 header: 'Name',
@@ -205,7 +208,10 @@ export const setBlockDefaults = (kind, newItem) => {
         }
         newItem.discount = 0;
         newItem.styles.backgroundColor = '#ffffff'
-    } else {
+    } else if(kind == 'Terms Of Service'){
+        newItem.children = undefined;
+        newItem.text = ''
+    }else { 
         newItem.styles.backgroundColor = '#ffffff'
     }
 }

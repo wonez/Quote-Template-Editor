@@ -8,7 +8,7 @@ import Children from '../../Children/Children'
 const Heading = props => {
     let toolbar = (
         <div>
-            <Toolbar title={"Heading Block"}
+            <Toolbar title={props.blockName ? props.blockName : "Heading Block"}
                      deleteItemFromEditor={props.deleteItemFromEditor} /> 
         </div>
     )

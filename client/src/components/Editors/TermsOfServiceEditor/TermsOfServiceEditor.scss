@@ -1,0 +1,45 @@
+.TermsOfServiceEditor{
+    .ButtonBox{
+        display: flex;
+        margin-top: 1rem;
+    }
+    .Button{
+        padding: .5rem 0;
+        display: block;
+        text-decoration: none;
+        text-align: center; 
+        cursor: pointer;
+        flex-grow: 1;
+    }
+    .Options{
+        margin-top: .5rem;
+        height: 10rem;
+        width: 100%;
+        border: 1px solid;
+        overflow-y: scroll;
+    }
+    .Option{
+        display: flex;
+        padding: .5rem;
+        border-bottom: 1px solid;
+        &:hover{
+            cursor: pointer;
+            background: whitesmoke;
+        }
+    }
+    .Select{
+        text-overflow: ellipsis;
+    }
+    .Delete{
+        color: red;
+    }
+    .Edit{
+        margin-left: auto;
+        color: blue;
+        text-decoration: none;
+    }
+    .Edit, .Delete{
+        flex-basis: 2rem;
+        text-align: center;
+    }
+}

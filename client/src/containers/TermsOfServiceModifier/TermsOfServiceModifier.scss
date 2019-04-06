@@ -1,0 +1,39 @@
+.TermsOfServiceModifier{
+    width: 100%;
+    padding: 2rem;
+    h1{
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+    }
+    textarea{
+        width: 100%;
+        height: 50vh;
+        border: .3rem solid;
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+    input{
+        width: 100%;
+        border: .3rem solid;
+        padding: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .Buttons{
+        margin-top: 2rem;
+        display: flex;
+        button{
+            padding:.5rem 2rem;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+    .Cancel{
+        color: red;
+        margin-right: 1rem;
+    }
+    .Save{
+        color: green;
+    }
+}
