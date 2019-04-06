@@ -1,14 +1,7 @@
-import React from 'react'
-
 import Editor from '../Editor/Editor'
 
-import { DragDropContextProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 
-const Landing = () => (
-    <DragDropContextProvider backend={HTML5Backend}>
-        <Editor /> 
-    </DragDropContextProvider>
-)
-
-export default Landing;
+export default DragDropContext(MultiBackend(HTML5toTouch))(Editor);

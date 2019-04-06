@@ -8,7 +8,7 @@ export const getUserTemplates = () => {
         dispatch({
             type: LOADING
         })
-        axios.get('http://localhost:3000/app/templates')
+        axios.get('app/templates')
             .then(res => {
                 dispatch(userTemplates(res.data));
                 dispatch({
@@ -23,7 +23,7 @@ export const createNewTemplate = () => {
         dispatch({
             type: LOADING
         })
-        axios.post('http://localhost:3000/app/template')
+        axios.post('app/template')
             .then(res => {
                 dispatch(appendTemplate(res.data))
                 dispatch({
@@ -38,7 +38,7 @@ export const removeUserTemplate = (id) => {
         dispatch({
             type: LOADING
         })
-        axios.delete(`http://localhost:3000/app/template/${id}`)
+        axios.delete(`app/template/${id}`)
             .then(res => {
                 dispatch(removeTemplate(res.data._id))
                 dispatch(setEditors(null, null))
@@ -54,7 +54,7 @@ export const renameUserTemplate = (id, title) => {
         dispatch({
             type: LOADING
         })
-        axios.put(`http://localhost:3000/app/rename`, {
+        axios.put(`app/rename`, {
             id, title
         }).then(res => {
             dispatch(renameTemplate(res.data._id, res.data.title))
@@ -70,7 +70,7 @@ export const getSingleTemplate = (id) => {
         dispatch({
             type: LOADING
         })
-        axios.get(`http://localhost:3000/app/template/${id}`)
+        axios.get(`app/template/${id}`)
             .then(res => {
                 dispatch(setEditors(res.data.editors, id))
                 dispatch({
@@ -84,7 +84,7 @@ export const saveChanges = (id, editors) => {
     store.dispatch({
         type: LOADING
     })
-    axios.put(`http://localhost:3000/app/template/${id}`, { editors })
+    axios.put(`app/template/${id}`, { editors })
         .then(res => {
             store.dispatch({
                 type: SAVED
@@ -104,7 +104,7 @@ export const createTermsOfService = (text, title) => {
     store.dispatch({
         type: LOADING
     })
-    axios.post(`http://localhost:3000/app/terms-of-service`, { text, title })
+    axios.post(`app/terms-of-service`, { text, title })
         .then(res => {
             store.dispatch({
                 type: LOADED
@@ -117,7 +117,7 @@ export const getTermsOfService = () => {
     store.dispatch({
         type: LOADING
     })
-    return axios.get('http://localhost:3000/app/terms-of-service')
+    return axios.get('app/terms-of-service')
         .then(res => {
             store.dispatch({
                 type: LOADED
@@ -130,7 +130,7 @@ export const deleteTermsOfService = (id) => {
     store.dispatch({
         type: LOADING
     })
-    return axios.delete(`http://localhost:3000/app/terms-of-service/${id}`)
+    return axios.delete(`app/terms-of-service/${id}`)
         .then(res => {
             store.dispatch({
                 type: LOADED
@@ -143,7 +143,7 @@ export const updateTermsOfService = (id, text, title) => {
     store.dispatch({
         type: LOADING
     })
-    return axios.put(`http://localhost:3000/app/terms-of-service/${id}`, { text, title })
+    return axios.put(`app/terms-of-service/${id}`, { text, title })
         .then(res => {
             store.dispatch({
                 type: LOADED
@@ -156,7 +156,7 @@ export const getSingleTermsOfService = (id) => {
     store.dispatch({
         type: LOADING
     })
-    return axios.get(`http://localhost:3000/app/terms-of-service/${id}`)
+    return axios.get(`app/terms-of-service/${id}`)
         .then(res => {
             store.dispatch({
                 type: LOADED

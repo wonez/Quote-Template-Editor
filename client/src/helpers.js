@@ -211,6 +211,7 @@ export const setBlockDefaults = (kind, newItem) => {
     } else if(kind == 'Terms Of Service'){
         newItem.children = undefined;
         newItem.text = ''
+        newItem.styles.backgroundColor = '#ffffff'
     }else { 
         newItem.styles.backgroundColor = '#ffffff'
     }
