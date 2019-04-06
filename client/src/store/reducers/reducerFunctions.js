@@ -372,7 +372,7 @@ export const renameTemplate = (oldState, id, title) => {
 export const changes = (oldState) => {
     const timeout = setTimeout(() => {
         saveChanges(oldState.templateId, oldState.editors)
-    }, 5000)//5 seconds autosave
+    }, 10000)//10 seconds autosave
     if(oldState.timeout){
         clearTimeout(oldState.timeout);
     }

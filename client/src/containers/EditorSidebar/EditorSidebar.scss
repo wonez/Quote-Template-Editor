@@ -1,6 +1,8 @@
 .EditorSidebar{
     border: .5rem solid black;
-    overflow: scroll;
+    @media only screen and (max-width: 1040px) {
+        overflow: scroll;
+    }
     .Content{
         padding: 1rem .5rem;
     }

@@ -2,8 +2,8 @@
     text-align: center;
     border: .5rem solid black;
     padding: 1rem;
-    overflow: scroll;
     @media only screen and (max-width: 1040px) {
+        overflow: scroll;
         padding: .5rem;
     }
     .CreateNew{

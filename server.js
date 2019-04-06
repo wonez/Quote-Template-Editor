@@ -1,5 +1,5 @@
 const express = require('express')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path')
 const session = require('express-session');
@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 
 require('./db')();
 
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
 
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
 app.use(bodyParser.json( {limit: '50mb'} ))
